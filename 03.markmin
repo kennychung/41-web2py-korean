@@ -6,19 +6,19 @@
 
 web2py comes in binary packages for Windows and Mac OS X. They include the Python interpreter so you do not need to have it pre-installed. There is also a source code version that runs on Windows, Mac, Linux, and other Unix systems. The Windows and OS X binary versions include the necessary Python interpreter. The source code package assumes that Python is already installed on the computer.
 
-web2py는 Windows와 Mac OS X에서는 바이너리 패키지로 제공된다. 여기에는 Python 인터프리터가 포함되어 있어서 따로 인스톨할 필요가 없다. 또한 Windows, Mac, Windows뿐만 아니라 다른 Unix 시스템에서 실행할 수 있는 소스 형태 배포도 존재한다. Windows 와 OS X 바이너리 버전에는 필요한 Python 인터프리터가 포함되어 있다. 소스코드 패키지는 컴퓨터에 이미 Python이 설치되어 있다고 가정한다.
+web2py는 Windows와 Mac OS X에서는 바이너리 패키지로 제공됩니다. 여기에는 Python 인터프리터가 포함되어 있어서 따로 인스톨할 필요가 없습니다. 또한 Windows, Mac, Windows뿐만 아니라 다른 Unix 시스템에서 실행할 수 있는 소스 형태 배포도 존재합니다. Windows 와 OS X 바이너리 버전에는 필요한 Python 인터프리터가 포함되어 있습니다. 소스코드 패키지는 컴퓨터에 이미 Python이 설치되어 있다고 가정합니다.
 
 web2py requires no installation. To get started, unzip the downloaded zip file for your specific operating system and execute the corresponding ``web2py`` file.
-web2py는 설치가 필요하지 않다. 시작하기 위해서는 OS에 맞는 zip파일을 다운로드한후  unzip하고  web2py 파일을 실행하는 것이다. 
+web2py는 설치가 필요하지 않습니다. 시작하기 위해서는 OS에 맞는 zip파일을 다운로드한후  unzip하고  web2py 파일을 실행하면 됩니다.
 
 On Windows, run:
-윈도우에서 실행
+윈도우에서 실행하는 경우
 ``
 web2py.exe
 ``:code
 
 On OS X, run:
-OS X에서 실행
+OS X에서 실행하는 경우 
 ``
 open web2py.app
 ``:code
@@ -51,7 +51,7 @@ The administrative interface, **admin**, is only accessible from localhost unles
 관리 인터페이스 **admin**는 Apache mod_proxy를 통해 web2py를 실행하는 경우를 제외하고 localhost에서만 접근 가능합니다. 만약에 **admin**에서 proxy를 감지하는 경우 session 쿠키는 secure로 설정되고 클라이언트와 프락시가 HTTPS를 통하지 않는 경우 **admin** 로긴은 동작하지 않습니다. 
 
 After the administration password has been set, web2py starts up the web browser at the page:
-관리자 암호가 설정된 이후 web2py는 web browser를 시작하고 첫화면을 표시한다.
+관리자 암호가 설정된 이후 web2py는 web browser를 시작하고 첫화면을 표시합니다.
 ``
 http://127.0.0.1:8000/
 ``:code
@@ -100,40 +100,64 @@ From the **admin** application's ''site'' page, you can perform the following op
 - **package** an application for distribution by clicking on the corresponding button. A downloaded application is a tar file containing everything, including the database. You should not untar this file; it is automatically unpackaged by web2py when installed with **admin**.
 - **clean up** an application's temporary files, such as sessions, errors and cache files.
 - **EDIT** an application.
-- 
+- **install** 페이지의 오른쪽 아래에 있는 폼을 완료하여 어플리케이션을 설치합니다. 어플리케이션의 이름을 지정하고, 패키지된 어플리케이션을 포함한 파일을 선택하거나 어플리케이션이 존재하는URL을 입력하고 "submit"을 클릭합니다. 
+- **uninstall** uninstall 버튼을 클릭해서 언인스톨 하며 확인 페이지가 있습니다.
+- **create** 이름을 정하고 "create"을 클릭해서 새로운 어플리케이션을 생성합니다.
+- **package** 패키지 버튼을 클릭해서 배포를 위한 어플리케이션을 패키징합니다. 다운로드 받은 어플리케이션 파일은 database등 어플리케이션에 필요한 모든것이 포함된 tar파일입니다. 이파일은 untar하면 안됩니다. **admin** 에서 인스톨할때 web2py에 의해서 자동으로 해제됩니다.
+- **clean up** 어플리케이션의 임시파일들 예를 들어 세션파일, 에러파일, 캐쉬파일들을 삭제합니다.
+- **EDIT** 어플리케이션을 편집합니다.
+
 
 -----
 When you create a new application using **admin**, it starts as a clone of the "welcome" scaffolding app with a "models/db.py" that creates a SQLite database, connects to it, instantiates Auth, Crud and Service, configures them. It also provides a "controller/default.py" which exposes actions "index", "download", "user" for user management, and "call" for services. In the following, we assume that these files have been removed; we will be creating apps from scratch.
 -----
+-----
+**admin**을 이용해서 새로운 어플리케이션을 생성할때는 "welcome" 어플리케이션을 복사하는 것부터 시작합니다. 여기에 포함된 "models/db.py"파일은 SQLite 데이터베이스를 생성, 연결하고 Auth, Crud, 서비스 객체를 생성하고 초기화 합니다. "controller/default.py"는 "index", "download", "user"를 제공하며 사용자 관리, 서비스들을 위한 "call" 함수를 제공합니다. 이후에는 이런 파일들이 삭제되었다고 생각하고 처음부터 새로운 어플리케이션을 생성해 볼 것입니다.
+-----
+
 
 -----
 web2py also comes with a **wizard**, described later in this chapter, that can write an alternate scaffolding code for you based on layouts and plugins available on the web and based on high level description of the models.
 -----
+-----
+또한 web2py에는 **wizard**가 포함되어 있는데 이후에 설명합니다. wizard는 웹상에 존재하는 레이아웃이나 플러그인, 그리고 상위수준의 model 명세를 기반으로 기본 코드를 생성할 수 있습니다.
+-----
+
 
 ### Say hello
 ``index``:inxx
 
 Here, as an example, we create a simple web app that displays the message "Hello from MyApp" to the user. We will call this application "myapp". We will also add a counter that counts how many times the same user visits the page.
+예로 간단하게 "Hello from MyApp" 메세지를 사용자에게 표시하는 어플리케이션을 생성합니다. 이름을 "myapp"이라고 하고 각 사용자들이 얼마나 많이 페이지를 이 페이지를 방문했는지 알수 있는 카운터를 추가할 것입니다.
 
 You can create a new application simply by typing its name in the form on the top right of the **site** page in **admin**.
+**admin**에 **site** 페이지의 오른쪽 위쪽에 어플리케이션 이름을 입력해서 새로운 어플리케이션을 생성할 수 있습니다.
 
 [[image @///image/en800.png center 447px]]
 
 After you press [create], the application is created as a copy of the built-in welcome application.
+[create]을 누르면 "welcome" 어플리케이션을 복사한 새로운 어플리케이션이 생성됩니다.
 
 [[image @///image/en900.png center 480px]]
 
 To run the new application, visit:
+어플리케이션을 실행하기 위해서는 다음에 접속합니다.
 ``
 http://127.0.0.1:8000/myapp
 ``:code
 
 Now you have a copy of the welcome application.
+이제 "welcome" 어플리케이션의 복사본을 만들었습니다.
+
 
 To edit an application, click on the ''edit'' button for the newly created application.
+어플리케이션을 수정하기 위해서는 새로 생성된 어플리케이션의 ''edit''버튼을 클릭합니다.
+
 
 The **edit** page tells you what is inside the application.
 Every web2py application consists of certain files, most of which fall into one of six categories:
+**edit**페이지는 어플리케이션에 어떤것이있는지 알려줍니다.
+모든 web2py 어플리케이션은 특정파일들로 구성됩니다. 이 파일들은 대부분 아래 6가지 범주에 속합니다.
 - **models**: describe the data representation.
 - **controllers**: describe the application logic and workflow.
 - **views**: describe the data presentation.
@@ -141,14 +165,30 @@ Every web2py application consists of certain files, most of which fall into one 
 - **modules**: Python modules that belong to the application.
 - **static files**: static images, CSS  files``css:w,css:o,css:school``:cite , JavaScript files``js:w,js:b``:cite , etc.
 - **plugins**: groups of files designed to work together.
+- **models**: 데이터의 구조를 표현합니다.
+- **controllers**: 어플리케이션의 로직과 흐름을 기술합니다.
+- **views**: 데이터 표시방법을 기술합니다.
+- **languages**: 어플리케이션의 표시를 다른 언어로 어떻게 표시하는지를 설명합니다.
+- **modules**: 어플리케이션에 속한 python 모듈이 위치합니다.
+- **static files**: 정적인 이미지나, CSS 파일 ``css:w,css:o,css:school``:cite, 자바스크립트 파일``js:w,js:b``:cite, 기타 파일들이 위치합니다.
+- **plugins**: 함께 동작하는 하나의 그룹에 속하는 파일들이 위치합니다.
+
  
 Everything is neatly organized following the Model-View-Controller design pattern. Each section in the ''edit'' page corresponds to a subfolder in the application folder.
+모든 것은 Model-View-Controller 디자인 패턴을 따라 깔끔하게 구성됩니다. ''edit'' 페이지에 각 섹션은 어플리케이션의 서브 폴더에 대응됩니다.
+
 
 Notice that section headings will toggle their content. Folder names under static files are also collapsible.
+섹션의 헤딩은 각 섹션의 컨텐트로 변경되다는것에 주목하세요. 정적파일 밑에 폴더 이름들은 모두 접을수 있습니다. 
 
 -------
 Each file listed in the section corresponds to a file physically located in the subfolder. Any operation performed on a file via the **admin** interface (create, edit, delete) can be performed directly from the shell using your favorite editor.
 -------
+-------
+섹션에 표시되는 각각의 파일 목록은 물리적으로 서브폴더에 위치한 파일에 대응됩니다. ""admin** 인터페이스를 통해서 파일에 수행한 어떤 동작도 자신이 좋아하는 에디터를 이용해서 셀에서 바로 수행할 수 있습니다.
+-------
+
+
 
 The application contains other types of files (database, session files, error files, etc.), but they are not listed on the ''edit'' page because they are not created or modified by the administrator; they are created and modified by the application itself.
 
