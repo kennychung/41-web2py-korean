@@ -253,36 +253,49 @@ If web2py does not find the requested view, it uses the "generic.html" view that
 ``Mac Mail``:inxx ``Google Maps``:inxx ``jsonp``:inxx
 If an extension other than "html" is specified ("json" for example), and the view file "[controller]/[function].json" is not found, web2py looks for the view "generic.json". web2py comes with generic.html, generic.json, generic.jsonp, generic.xml, generic.rss, generic.ics (for Mac Mail Calendar), generic.map (for embedding Google Maps), and generic.pdf (based on fpdf). These generic views can be modified for each application individually, and additional views can be added easily.
 -------
+-------
+만약에 확장자가 "html"이 아닌 다른것이(예를 들어 "json") 지정되고 "[controller]/[function].json" view 파일이 존재하지 않는 경우에 web2py는 "generic.json"파일을 찾게됩니다. web2py는 generic.html, generic.json, generic.jsonp, generic.xml, generic.rss, generic.ics(Mac 메일 달력), generic.map(Google Maps를 임베딩하는 용도), generic.pdf(fpdf 기반)를 포함하고 있습니다. 이 generic view들은 각 어플리케이션을 위해서 각각 변경할 수 있고 또한 추가적인 view 파일들을 쉽게 추가할 수있습니다. 
+-------
 
 -------
 Generic views are a development tool. In production every action should have its own view. In fact, by default, generic views are only enabled from localhost.
+-------
+-------
+Generic view 파일들은 개발 툴입니다. 실제 제품에서 모든 action은 이게 해당하는 view를 가져야 합니다. 사실 generic view 파일들은 localhost에서만 사용하도록 되어 있습니다.
 -------
 
 -------
 You can also specify a view with ``response.view = 'default/something.html'``
 -------
+-------
+``response.view = 'default/something.html'``와 같이 view를 지정할 수 있습니다.
+-------
 
 Read more on this topic in Chapter 10.
-
+더 자세한 내용은 10장을 참고하세요.
 If you go back to "EDIT" and click on index, you will now see the following HTML page:
-
+다시 "EDIT"로 가서 index를 클릭하면 다음과 같은 HTML 페이지를 볼 수 있습니다.
 [[image @///image/en1200.png center 480px]]
 
 For debugging purposes you can always append
-
+디버깅을 위해서 다음과 같은 코드를 view에 추가할 수 있습니다.
 ``
 {{=response.toolbar()}}
 ``:code
 
 to the code in a view and it will show you some useful information, including the request, response and session objects, and list all db queries with their timing.
+그러면 view에서 여러가지 유용한 정보를 보여줍니다. request, response, session 오브젝트, 시간 정보를 포함한 모든db 쿼리들을 포함하고 있습니다.
 
 ### Let's count
+### 세어보아요
 ``session``:inxx
 Let's now add a counter to this page that will count how many times the same visitor displays the page.
-
+이제 이 페이지에 카운터를 추가합니다. 이 카운트는 같은 사용자가 얼마나 많이 페이지를 방문했는지에 대해 계산할 것입니다.
 web2py automatically and transparently tracks visitors using sessions and cookies. For each new visitor, it creates a session and assigns a unique "session_id". The session is a container for variables that are stored server-side. The unique id is sent to the browser via a cookie. When the visitor requests another page from the same application, the browser sends the cookie back, it is retrieved by web2py, and the corresponding session is restored.
+web2py는 자동으로 그리고 투명하게 세션과 쿠키를 이용해서 방문자를 추적합니다. 새로운 방문자마다 새로운 새션을 생성하고 유일한 "session_id"를 할당합니다. 세션은 서버측에 저장되는 변수를 담는 컨테이너입니다. 유일한 id는 쿠키를 통해서 브라우저로 전송됩니다. 방문자가 같은 어플리케이션의 다른 페이지를 요청할때 브라우저가 쿠키를 다시 서버로 전송하게되고 web2py에서 유일한 id값을 얻게 됩니다. 이 값에 해당하는 session이 복구됩니다.
 
 To use the session, modify the default controller:
+세션을 사용하기 위해서는 기본 controller를 수정합니다.
 ``
 def index():
     if not session.counter:
@@ -293,8 +306,10 @@ def index():
 ``:code
 
 Notice that ``counter`` is not a web2py keyword but ``session`` is. We are asking web2py to check whether there is a counter variable in the session and, if not, to create one and set it to 1. If the counter is there, we ask web2py to increase the counter by 1. Finally we pass the value of the counter to the view.
+``counter``는 web2py 예약어가 아니지만 ``session``는 예약어라는 것을 주목하세요. 우리는 web2py에게 session에 counter 변수가 포함되어 있는지검사하도록 지시합니다. 만약에 존재하지 않는 다음 하나를 생성하고 1로 설정합니다. 만약에 counter 변수가 존재한다면 값을 1증가하도록 web2py에 요청합니다. 마지막으로 counter의 값을 view에 전달합니다.
 
 A more compact way to code the same function is this:
+같은 함수를 더 깔끔하게 코딩하면 다음과 같습니다. 
 ``
 def index():
     session.counter = (session.counter or 0) + 1
@@ -302,6 +317,7 @@ def index():
 ``:code
 
 Now modify the view to add a line that displays the value of the counter:
+이제 counter값을 표시할 한줄을 view에 추가합니다.
 ``
 <html>
    <head></head>
@@ -313,19 +329,22 @@ Now modify the view to add a line that displays the value of the counter:
 ``:code
 
 When you visit the index page again (and again) you should get the following HTML page:
-
+다시 index 페이지를 방문할때 다음과 같은 HTML 페이지를 보게될 것입니다.
 [[image @///image/en1300.png center 480px]]
 
 The counter is associated with each visitor, and is incremented each time the visitor reloads the page. Different visitors see different counters.
-
+counter는 각 방문자와 연관되어 있고 페이지를 리로딩할때마다 증가합니다. 다른 방문자들은 각각 다른 counter 값을 보게 됩니다.
 ### Say my name
+### 내 이름을 말해봐
 ``form``:inxx ``request.vars``:inxx
 
 Now create two pages (first and second), where the first page creates a form, asks the visitor's name, and redirects to the second page, which greets the visitor by name.
+이제 2페이지(첫번재와 두번째)를 생성합니다. 첫번째 페이지에서는 하나의 form을 생성하고 방문자에게 이름을 물어봅니다. 그리고 두번째 페이지로 리다이렉트합니다. 두번째 페이지에서는 방문자의 이름로 반갑게 맞아 줍니다.
 
 [[yUML diagram @///image/en1400.png center 293px]]
 
 Write the corresponding actions in the default controller:
+다음 기본 controller에서 그에 해당하는 action을 작성합니다.
 ``
 def first():
     return dict()
@@ -335,7 +354,9 @@ def second():
 ``:code
 
 Then create a view "default/first.html" for the first action,
+그다음 첫번째 action에 대한 "default/first.html"을 생성합니다.
 and enter:
+그리고 다음과 같이 입력합니다.
 ``
 {{extend 'layout.html'}}
 What is your name?
@@ -346,6 +367,7 @@ What is your name?
 ``:code
 
 Finally, create a view "default/second.html" for the second action:
+끝으로 두번째 action을 위한 "default/second.html" view를 생성합니다.
 ``
 {{extend 'layout.html'}}
 <h1>Hello {{=request.vars.visitor_name}}</h1>
@@ -353,25 +375,29 @@ Finally, create a view "default/second.html" for the second action:
 
 ``layout``:inxx
 In both views we have extended the basic "layout.html" view that comes with web2py. The layout view keeps the look and feel of the two pages coherent. The layout file can be edited and replaced easily, since it mainly contains HTML code.
-
+두개의 view파일 모두 web2py에 포함된 "layout.html" view를 확장합니다. 이 layout view는 생성된 2개의 페이지의 룩앤필을 일관성있게 유지해 줍니다.
 If you now visit the first page, type your name:
-
+첫번째 페이지에 방문해서 이름을 입력하고
 [[image @///image/en1500.png center 480px]]
 
 and submit the form, you will receive a greeting:
-
+form을 제출하면 환영 메세지를 받을 것입니다.
 [[image @///image/en1600.png center 480px]]
 
+### Postbacks
 ### Postbacks
 ``redirect``:inxx ``URL``:inxx ``postback``:inxx
 
 The mechanism for form submission that we used before is very common, but it is not good programming practice. All input should be validated and, in the above example, the burden of validation would fall on the second action. Thus the action that performs the validation is different from the action that generated the form. This tends to cause redundancy in the code.
+위에서 사용한 form 제출 메커니즘은 매우 일반적인 것입니다. 그러나 좋은 프로그래밍 관행은 아닙니다. 모든 입력에 대해서는 유효성 검사를 해야 하고 위의 예제의 경우 유효성 검사에 대한 부담을 두번째 페이지에서 지게됩니다. 그래서 유효성을 검사하는 action과 form을 생성했던 action과 다릅니다. 이것은 불필요한 코드를 만들 개연성이 큽니다.
 
 A better pattern for form submission is to submit forms to the same action that generated them, in our example the "first". The "first" action should receive the variables, process them, store them server-side, and redirect the visitor to the "second" page, which retrieves the variables. This mechanism is called a ''postback''.
+form 제출에 대한 더 나은 패턴은 form을 생성했던 action에 다시 form을 제출하는 것입니다. 우리 예제의 경우 "첫번째" 페이지가 됩니다. "첫번째" action은 모든 변수를 받고 처리하고 서버측에 저장하고 다시 사용자를 "두번째"페이지로 리다이렉트합니다. 이 두번째 페이지에서는 전달된 모든 변수를 받게됩니다. 이러한 메커니즘을 "postback"이라고 부릅니다.
 
 [[yUML diagram @///image/en1700.png center 293px]]
 
 Modify the default controller to implement self-submission:
+자기제출(self-submission)을 구현하기 위해서 기본 controller를 수정합니다.
 ``
 def first():
     if request.vars.visitor_name:
@@ -384,6 +410,7 @@ def second():
 ``:code
 
 Then modify the "default/first.html" view:
+그다음 "default/first.html" view를 수정합니다.
 ``
 {{extend 'layout.html'}}
 What is your name?
@@ -394,16 +421,20 @@ What is your name?
 ``:code
 
 and the "default/second.html" view needs to retrieve the data from the ``session`` instead of from the ``request.vars``:
+그리고 "default/second.html" view는 데이터를 ``request.vars``로 부터 얻는 대신 ``session``에서 얻도록 해야 합니다.
 ``
 {{extend 'layout.html'}}
 <h1>Hello {{=session.visitor_name or "anonymous"}}</h1>
 ``:code
 
 From the point of view of the visitor, the self-submission behaves exactly the same as the previous implementation. We have not added validation yet, but it is now clear that validation should be performed by the first action.
+방문자의 관점에서 보면 자기제출(self-submission)의 동작은 이전 구현과 정확히 일치합니다. 아직 유효검사를 추가하지는 않았지만 이제 유효성검사가 첫번째 action에서 수행되어야 한다는것은 명확합니다.
 
 This approach is better also because the name of the visitor stays in the session, and can be accessed by all actions and views in the applications without having to be passed around explicitly.
+이 시도는 방문자의 이름이 session에 저장되어 있기 때문에 더 낫습니다. 또한 명시적으로 전달될 필요 없이 어플리케이션의 모든 action과 view에서 접근가능하게 됩니다.
 
 Note that if the "second" action is ever called before a visitor name is set, it will display "Hello anonymous" because  ``session.visitor_name`` returns ``None``. Alternatively we could have added the following code in the controller (inside the ``second`` function):
+만약에 "second" action이 방문자의 이름이 설정되기 전에 호출되는 경우에 "Hello anonymous"를 표시합니다. 왜냐하면 ``session.visitor_name``은 ``None``을 리턴하기 때문입니다. 대안으로는 다음 코드를 controller의 ``second`` function안에 추가할 수 있습니다.
 
 ``
 if not request.function=='first' and not session.visitor_name:
@@ -411,12 +442,15 @@ if not request.function=='first' and not session.visitor_name:
 ``:code
 
 This is a general mechanism that you can use to enforce authorization on controllers, though see Chapter 9 for a more powerful method.
+이것은 controller에서 인증을 요구할수 있는 일반적인 매커니즘입니다. 더 좋은 방법에 대해서 9장에서 보게 될 것입니다.
 
 ``FORM``:inxx ``INPUT``:inxx ``requires``:inxx ``IS_NOT_EMPTY``:inxx ``accepts``:inxx
 
 With web2py we can move one step further and ask web2py to generate the form for us, including validation. web2py provides helpers (FORM, INPUT, TEXTAREA, and SELECT/OPTION) with the same names as the equivalent HTML tags. They can be used to build forms either in the controller or in the view.
+한발짝 더 나아가 web2py에게 유효성 검사를 포함한 form을 생성하도록 할 수 있습니다. web2py는 HTML 태크와 일치하는 FORM, INPUT, TEXTAREA, SELECT/OPTION 헬퍼를 제공합니다. 이 헬퍼는 controller나 view에서 form을 생성하는데 사용될 수 있습니다.
 
 For example, here is one possible way to rewrite the first action:
+예를 들어 다음은 "first" action을 다시 작성할 수 있는 한가지 방법입니다.
 ``
 def first():
     form = FORM(INPUT(_name='visitor_name', requires=IS_NOT_EMPTY()),
@@ -428,9 +462,9 @@ def first():
 ``:code
 
 where we are saying that the FORM tag contains two INPUT tags. The attributes of the input tags are specified by the named arguments starting with underscore. The ``requires`` argument is not a tag attribute (because it does not start by underscore) but it sets a validator for the value of visitor_name.
-
+FORM 태크는 두개의 INPUT 태크를포함하고 있습니다. input 태크의 속성들은 _(underscore)로 시작하는 명명된 인수로 지정됩니다. ``requires`` 인수는 태그의 속성이 아니고(왜냐하면 이것은 _(underscore)로 시작하지 않기 때문입니다.) "visitor_name"의 값에 대한 유효검사자를 설정합니다.
 Here is yet another better way to create the same form:
-
+다음은 같은 form을 생성하는 더 나은 방법입니다.
 ``
 def first():
     form = SQLFORM.factory(Field('visitor_name', requires=IS_NOT_EMPTY()))
@@ -441,6 +475,7 @@ def first():
 ``:code
 
 The ``form`` object can be easily serialized in HTML by embedding it in the "default/first.html" view.
+``form`` 오브젝트는 "default/first.html" view안에 포함시키므로써 쉽게 HTML안에 직렬화 할 수 있습니다.
 ``
 {{extend 'layout.html'}}
 What is your name?
@@ -448,27 +483,30 @@ What is your name?
 ``:code
 
 The ``form.process()`` method applies the validators and returns the form itself. The ``form.accepted`` variable is set to True if the form was processed and passed validation. If the self-submitted form passes validation, it stores the variables in the session and redirects as before. If the form does not pass validation, error messages are inserted into the form and shown to the user, as below:
-
+``form.process()`` 메소드는 유효검사자를 적용하고 form자체를 리턴합니다. ``form.accepted`` 변수는 form이 처리되고 유효성검사를 통과하면 True로 설정됩니다. 자기제출(self-submitted)된 form이 유효성 검사를 통과하는 경우 세션에 변수들을 저장하고 이전으로 리다이렉트합니다. form이 유효성검사를 통과하지 못하는 경우 에러 메세지가 form에 삽입되고 사용자에게 다음과 같이 보여집니다.
 [[image @///image/en1800.png center 480px]]
 
 In the next section we will show how forms can be generated automatically from a model.
-
+다음 섹션에서는 어떻게 model에서 자동으로 form이 생성되는지 보게 될 것입니다.
 ### An image blog
+### 이미지 블로그
 ``upload``:inxx
 
 Here, as another example, we wish to create a web application that allows the administrator to post images and give them a name, and allows the visitors of the web site to view the named images and submit comments.
-
+이번 예제에서는 관리자가 이미지를 포스트하고 이미지에 이름을 설정하고 방문자에게 이름이 주어진 이미지를 보게하고 코멘트를 달도록 하는 어플리케이션을 생성할 것입니다.
 As before, from the **site** page in **admin**, create a new application called ``images``, and navigate to the ''edit'' page:
-
+이전처럼 **admin** 페이지의 **site** 페이지에서 ``image``라는 새로운 어플리케이션을 생성합니다. 그 다음 ''edit'' 페이지로 이동합니다.
 [[image @///image/en1900.png center 480px]]
 
 We start by creating a model, a representation of the persistent data in the application (the images to upload, their names, and the comments). First, you need to create/edit a model file which, for lack of imagination, we call "db.py". We assume the code below will replace any existing code in "db.py". Models and controllers must have a ``.py`` extension since they are Python code. If the extension is not provided, it is appended by web2py. Views instead have a ``.html`` extension since they mainly contain HTML code.
+하나의 모델과 영구 데이터(업로드한 이미지들, 이미지에 대한 이름, 코멘트)에 대한 표현계층을 생성하는 것으로 시작합니다. 첫번째 하나의 model 파일을 생성하고 수정합니다. 이 파일을 "db.py"라고 부릅니다.(상상력이 부족해서 그냥 그렇게 부르겠습니다.)  아래 코드로 "db.py"파일을 교체한다고 가정합니다. Model과 controller는 ``.py`` 확장자를 가져야 합니다. 왜냐하면 이 파일들은 Python 코드이기 때문입니다. 만약 확장자가 주어지지 않는다면 web2py에 의해서 추가될 것입니다. 대신에 View는 ``html``확장자를 갖는데 이것은 대부분 HTML code를 포함하기 때문입니다.
 
 Edit the "db.py" file by clicking the corresponding "edit" button:
-
+"edit" 버튼을 클릭해서 "db.py"파일을 수정합니다.
 [[image @///image/en2000.png center 480px]]
 
 and enter the following:
+그리고 다음과 같이 입력합니다.
 
 ``IS_EMAIL``:inxx ``IS_NOT_EMPTY``:inxx ``IS_IN_DB``:inxx
 ``
@@ -495,43 +533,53 @@ db.comment.image_id.writable = db.comment.image_id.readable = False
 ``:code
 
 Let's analyze this line by line.
-
+한줄한줄 살펴보도록 하죠.
 Line 1 defines a global variable called ``db`` that represents the database connection. In this case it is a connection to a SQLite database stored in the file  "applications/images/databases/storage.sqlite". In the SQLite case, if the database does not exist, it is created. You can change the name of the file, as well as the name of the global variable ``db``, but it is convenient to give them the same name, to make it easy to remember.
-
+1라인은 ``db``라는 전역 변수를 정의합니다. 이것은 데이터 베이스 연결을 나타냅니다. 이 경우 SQLite 데이터베이스에 대한 연결이고 "applications/images/databases/storage.sqlite" 파일에 저장됩니다. SQLite 의 경우 데이터베이스가 존재하지 않는 경우 생성됩니다. 이 파일에 이름을 수정할 수 있으며 전역변수 ``db`` 의 이름도 수정할 수 있습니다. 하지만 관례상 같은 이름이 주어지고 기억하기 쉽도록 도와줍니다.
 Lines 3-5 define a table "image". ``define_table`` is a method of the ``db`` object. The first argument, "image", is the name of the table we are defining. The other arguments are the fields belonging to that table. This table has a field called "title", a field called "file", and a field called "id" that serves as the table primary key ("id" is not explicitly declared because all tables have an id field by default). The field "title" is a string, and the field "file" is of type "upload". "upload" is a special type of field used by the web2py Data Abstraction Layer (DAL) to store the names of uploaded files. web2py knows how to upload files (via streaming if they are large), rename them safely, and store them.
+3-5라인은 "image" 테이블을 정의합니다. ``define_table``은 ``db`` 오브젝트의 메소드 입니다. 첫번째 인수 "image"는 우리가 정의한 테이블의 이름입니다. 다른 인수들은 테이블에 속한 필드들입니다. 이 테이블은 "title", "file", "id"라는 필드를 가지고 있고 "id" 필드는 테이블의 기본키로 동작합니다.(모든 테이블은 기본적으로 "id" 필드를 가지고 있기 때문에 "id"는 명시적으로 선언되지 않습니다.)."title" 필드는 스트링이며 "file"는 "upload" 타입입니다. "upload"는 특별한 필드로 web2py Data Abstraction Layer(DAL)에서 업로드한 파일들의 이름을 저장하는 용도로 사용됩니다. web2py는 어떻게 파일들을 업로드하고(큰경우 스트리밍을 통해서), 안전하게 이름을 변경하고 저장합니다.
 
 When a table is defined, web2py takes one of several possible actions:
 - if the table does not exist, the table is created;
 - if the table exists and does not correspond to the definition, the table is altered accordingly, and if a field has a different type, web2py tries to convert its contents;
 - if the table exists and corresponds to the definition, web2py does nothing.
+테이블이 정의될때 web2py는 가능한 몇가지 action들에 한가지를 수행합니다.
+- 만약에 테이블이 존재하지 않는 경우 테이블을 생성합니다.
+-. 테이블이 존재하고 정의와 일치하지 않는 경우 그에 맞게 테이블을 수정하고 필드가 다른 타입인 경우 web2py는 필드의 값변환을 시도 합니다.
+-. 테이블의 존재하고 정의와 일치하는 경우 아무것도 하지 않습니다.
 
 This behavior is called "migration". In web2py migrations are automatic, but can be disabled for each table by passing ``migrate=False`` as the last argument of ``define_table``.
-
+이런 동작을 "migration"이라고 부릅니다. web2py 마이그레이션은 자동으로 일어나고 ``define_table``의 마지막 인수로 테이블에 ``migrate=False``를 전달함으로써 각 테이블에서 해제 할 수 있습니다.
 Line 6 defines a format string for the table. It determines how a record should be represented as a string. Notice that the ``format`` argument can also be a function that takes a record and returns a string. For example:
-
+5라인은 테이블을 위한 형식화된 문자를 정의합니다. 이것은 어떻게 레코드가 문자열로 표시되어야 하는지를 결정합니다. ``format`` 인수는 함수가 될수 있다는 것을 주목하세요. 이 함수는 레코드를 취할 수 있고 문자열을 반환합니다. 예를 들면 다음과 같습니다.
 ``
 format=lambda row: row.title
 ``:code
 
 Lines 8-12 define another table called "comment".
 A comment has an "author", an "email" (we intend to store the email address of the author of the comment), a "body" of type "text" (we intend to use it to store the actual comment posted by the author), and an "image_id" field of type reference that points to ``db.image`` via the "id" field.
+8-12라인은 "comment"라는 테이블 정의합니다.
+이 테이블은 "author", "email"을 가지고 있고 "email" 필드는 코멘트 작성자의 email 주소를 저장할 용도로 사용합니다. "text" 형식의 "body" 필드를 가지고 있으며 작성자의 작성한 코멘트 자체를 저장하는 용도로 사용됩니다. "image_id" 필드는 레퍼런스 형식으로 "id" 필드를 통해서 ``db.image`` 테이블을 지정합니다.
 
 In line 14, ``db.image.title`` represents the field "title" of table "image". The attribute ``requires`` allows you to set requirements/constraints that will be enforced by web2py forms. Here we require that the "title" is unique:
-
+라인 14 ``db.image.title``는 "image" 테이블의 "title" 필드를 나타냅니다. ``requires`` 속성은 요구사항이나 제약조건을 설정할 수 있도록 해줍니다. 이런 요구사항이나 제약조건은 web2py form에서 요구하게 됩니다. 여기서는 "title" 필드는 유일 할 것을 요구하는 것입니다.
 ``IS_NOT_IN_DB(db, db.image.title)``:code
 
 ''Notice this is optional because it is set automatically given that ``Field('title', unique=True)``''.
-
+선택사항이라는 것을 주목하세요. 왜나하면 ``Field('title', unique=True)``에서  자동으로 설정됩니다. 
 The objects representing these constraints are called validators. Multiple validators can be grouped in a list. Validators are executed in the order they appear.
+이런 제약조건을 표현하는 오브젝트들을 유효자라고 합니다. 다수의 유효자는 하나의 리스트로 묶일 수 있습니다. 유효자들은 나타나는 순서대로 실행됩니다.
 ``IS_NOT_IN_DB(a, b)`` is a special validator that checks that the value of a field ``b`` for a new record is not already in ``a``.
-
+``IS_NOT_IN_DB(a,b)``는 특별한 유효자로 새로운 레코드에 대해서 필드 ``b``값이 ``a``에는 존재하지 않는 것을 검사하는 용도로 사용됩니다.
 Line 15 requires that the field "image_id" of table "comment" is in ``db.image.id``. As far as the database is concerned, we had already declared this  when we defined the table "comment".
+15라인은 "comment" 테이블의 "image_id" 필드가 ``db.image.id``안에 있는 것을 요구합니다. 데이터베이스에 관해서는 테이블 "comment"를 정의할때 이미 선언하였습니다.
 Now we are explicitly telling the model that this condition should be enforced by web2py, too, at the form processing level when a new comment is posted, so that invalid values do not propagate from input forms to the database. We also require that the "image_id" be represented by the "title", ``'%(title)s'``, of the corresponding record.
-
+이제 명시적으로 model에게 이 조건은 코멘트가 포스팅 될때 web2py가 form 처리 단계에서 지켜져야 한다고 명시하고 있습니다. 그래서 유효하지 않는 값의 경우 입력 form에서 데이터베이스로 전파되지 않도록 합니다. "image_id"는 "title"을 해당하는 레코드의 ``%(title)s'``로 표현되어 질것을 요구합니다.
 Line 20 indicates that the field "image_id" of table "comment" should not be shown in forms, ``writable=False`` and not even in readonly forms, ``readable=False``.
+20라인 ``writable=False``은 "comment" 테이블의 "image_id" 필드가 form에서 보여지지 않아야 하는 것을 가르킵니다. ``readable=False``의 경우 읽기전용 form에서도 표시되지 않도록 합니다.
 
 The meaning of the validators in lines 15-17 should be obvious.
-
+15-17라인의 유효자들의 의미는 자명해야 합니다.
 ``format``:inxx
 Notice that the validator
 ``
@@ -539,74 +587,85 @@ db.comment.image_id.requires = IS_IN_DB(db, db.image.id, '%(title)s')
 ``:code
 
 can be omitted (and would be automatic) if we specify a format for referenced table:
+유효자는 참조되는 테이블의 포맷을 지정한다면 생략할 수 있다는 것에 주목하세요
+
 ``
 db.define_table('image', ..., format='%(title)s')
 ``:code
 
 where the format can be a string or a function that takes a record and returns a string.
-
+포맷은 스트링이나 레코드를 인수로 받고 스트링을 리턴하는 함수가 될수 있습니다.
 ``appadmin``:inxx
 Once a model is defined, if there are no errors, web2py creates an application administration interface to manage the database. You access it via the "database administration" link in the ''edit'' page or directly:
+에러없이 모델이 정의되고 나면 web2py는 데이터베이서를 관리할 어플리케이션 관리 인터페이스를 생성합니다. "edit"페이지나 직접적으로 "database administration"링크를 통해서 접근 가능합니다.
 ``
 http://127.0.0.1:8000/images/appadmin
 ``:code
 
 Here is a screenshot of the **appadmin** interface:
-
+다음은 **appadmin** 인터페이스의 스크린샷입니다.
 [[image @///image/en2100.png center 480px]]
 
 This interface is coded in the controller called "appadmin.py" and the corresponding view "appadmin.html". From now on, we will refer to this interface simply as **appadmin**. It allows the administrator to insert new database records, edit and delete existing records, browse tables, and perform database joins.
-
+이 인터페이스는 "appadmin.py"라는 controller와 "appadmin.html" view에 작성되어 있습니다. 이제부터 간단히 **appadmin** 로 칭하겠습니다. 이를 통해서 새로운 데이터베이스 레코드를 삽입하고 수정하고 존재하는 레코드를 삭제하고 테이블을 표시하고 데이터베이스 join을 수행합니다.
 The first time **appadmin** is accessed, the model is executed and the tables are created. The web2py DAL translates Python code into SQL statements that are specific to the selected database back-end (SQLite in this example). You can see the generated SQL from the ''edit'' page by clicking on the "sql.log" link under "models". Notice that the link is not present until the tables have been created.
-
+처음 **appapdmin**이 사용될때 model이 실행되고 테이블이 생성됩니다. web2py DAL은 Python 코드를 벡엔드 데이터베이스(이번 예제에서는 SQLite)에 맞는 SQL 문으로 변환합니다. "edit"페이지의 "model"아래 "sql.log" 링크를 클릭해서 생성된 SQL을 볼수 있습니다. 이 링크는 테이블이 생성되기 전까지는 존재하지 않습니다.
 [[image @///image/en2200.png center 480px]]
 
 If you were to edit the model and access **appadmin** again, web2py would generate SQL to alter the existing tables. The generated SQL is logged into "sql.log".
-
+모델을 수정했고 다시 **appadmin**에 접근했다면 web2py는 존재하는 테이블을 수정하는 SQL문을 생성할 것입니다. 생성된 SQL은 "sql.log"에 로깅됩니다.
 Now go back to **appadmin** and try to insert a new image record:
-
+**appadmin** 으로 다시 되돌아가서 새로운 image 레코드를 삽입해 봅니다.
 [[image @///image/en2300.png center 480px]]
 
 web2py has translated the ``db.image.file`` "upload" field into an upload form for the file. When the form is submitted and an image file is uploaded, the file is renamed in a secure way that preserves the extension, it is saved with the new name under the application "uploads" folder, and the new name is stored in the ``db.image.file`` field. This process is designed to prevent directory traversal attacks.
-
+web2py는 ``db.image.file`` "upload" 필드를 파일을 위한 upload form으로 변환합니다. form이 제출될때 이미지 파일은 업로드 됩니다. 이 파일의 이름은  안전한 방법으로 변경되며 확장자는 유지됩니다. 이파일은 새로운 이름으로 어플리케이션의 "uploads" 폴더 밑에 저장되고 새로운 이름은 ``db.image.file`` 필드에 저장됩니다. 이러한 처리는 디렉토리 탐색 공격을 막기위해 설계되었습니다.
 Notice that each field type is rendered by a ''widget''. Default widgets can be overridden.
-
+각각의 필드 타입은 "widget"에 의해서 표시됩니다. 기본 widget은 override가능합니다.
 When you click on a table name in **appadmin**, web2py performs a select of all records on the current table, identified by the DAL query
+**appadmin**의 테이블 이름을 클릭할때 web2py는 DAL 쿼리에 의해서 지정된 select를 현재 테이블의 모든 레코드에 수행합니다.
 ``
 db.image.id > 0
 ``:code
 
 and renders the result.
+그후 결과를 표시합니다.
 
 [[image @///image/en2400.png center 480px]]
 
 You can select a different set of records by editing the SQL query and pressing [Submit].
-
+SQL 쿼리를 수정하고 제출하므로써 다른 레코드 셋을 선택할 수 있습니다.
 To edit or delete a single record, click on the record id number.
+하나의 레코드를 수정 삭제하기 위해서는 레코드 id 숫자를 클릭합니다.
 
 Because of the ``IS_IN_DB`` validator, the reference field "image_id" is rendered by a drop-down menu. The items in the drop-down are stored as keys (``db.image.id``), but are represented by their ``db.image.title``, as specified by the validator.
-
+``IS_IN_DB`` 유효자때문에 참조 필드 "image_id"는 drop-down 메뉴로 표시됩니다. drop-down 의 아이템은 ``db.image.id``의 키로 저장됩니다. 하지만 유효자에서 지정한 ``db.image.title``에 의해서 표시됩니다. 
 Validators are powerful objects that know how to represent fields, filter field values, generate errors, and format values extracted from the field.
-
+유효자는 필드를 어떻게 표시하고 값을 필터링하고 에러를 발생시키고 필드에서 추출한 값을 형식에 맞게 표시하는 방법을 알고 있는 강력한 오브젝트입니다.
 The following figure shows what happens when you submit a form that does not pass validation:
-
+다음 그림은 유효검사를 통과하지 못한 폼을 제출한 경우 어떤 일이 벌어지는지를 보여줍니다.
 [[image @///image/en2500.png center 480px]]
 
 The same forms that are automatically generated by **appadmin** can also be generated programmatically via the ``SQLFORM`` helper and embedded in user applications. These forms are CSS-friendly, and can be customized.
-
+**appadmin**에 의해서 자동으로 생성된 같은 폼은 ``SQLFORM`` 헬퍼을 통해서 프로그래밍 적으로 생성할 수 있으며 사용자 어플리케이션에 포함시킬 수 있습니다. 이런 form들은 CSS에 적합하고 커스터마이징이 가능합니다.
 Every application has its own **appadmin**; therefore, **appadmin** itself can be modified without affecting other applications.
+모든 어플리케이션은 각자의 **appadmin**을 가지고 있어서 **appadmin** 자체를 다른 어플리케이션에 영향을 주지 않고 변경할 수 있습니다.
 
 So far, the application knows how to store data, and we have seen how to access the database via **appadmin**. Access to **appadmin** is restricted to the administrator, and it is not intended as a production web interface for the application; hence the next part of this walk-through. Specifically we want to create:
+지금까지 어플리케이션이 어떻게 데이터를 저장하는지 알고 **appadmin**을 통해서 어떻게 데이터베이스에 접근하는지 봤습니다. **appadmin**에 접근하는 것은 관리자에게만 허용됩니다. 그리고 이것은 어플리케이션의 상용 제품 웹 인터페이스로 의도된 것이 아닙니다. 그래서 다음 파트는 이부분에 대해서 살펴볼 것입니다. 특별히 다음의 것들을 생성하길 원합니다.
 - An "index" page that lists all available images sorted by title and links to detail pages for the images.
 - A "show/[id]" page that shows the visitor the requested image and allows the visitor to view and post comments.
 - A "download/[name]" action to download uploaded images.
+- "index" 페이지: 제목으로 정렬된 모든 이미지들을 목록으로 표시하고 이러한 이미지에 대한 자세한 정보를 표시하는 페이지로 링크합니다.
+- "show/[id]" 페이지: 요청된 이미지를 방문자에게 보여주고 방문자가 보고 코멘트를 포스트 할 수 있도록 해줍니다.
+-. "download/[name]" action: 업로드된 이미지를 다운로드 합니다.
 
 This is represented schematically here:
-
+도식화 화면 다음과 같습니다.
 [[yUML diagram @///image/en2600.png center 480px]]
 
 Go back to the ''edit'' page and edit the "default.py" controller, replacing its contents with the following:
-
+"edit" 페이지로 돌아가서 "default.py" controller를 수정합니다. 그리고 내용을 다음과 같이 변경합니다.
 ``select``:inxx
 ``
 def index():
@@ -615,17 +674,21 @@ def index():
 ``:code
 
 This action returns a dictionary. The keys of the items in the dictionary are interpreted as variables passed to the view associated to the action. When developing, if there is no view, the action is rendered by the "generic.html" view that is provided with every web2py application.
+이 action은 dictionary를 반환합니다. dictionary의 아이템의 키는 변수로 번역되고 action와 연결된 view에 전달됩니다. 개발할때 view가 없다면 action은 모든 web2py 어플리케이션에 제공되어진 "generic.html" view를 통해서 표시됩니다.
 
 The index action performs a select of all fields (``db.image.ALL``) from table image, ordered by ``db.image.title``. The result of the select is a ``Rows`` object containing the records. Assign it to a local variable called ``images`` returned by the action to the view. ``images`` is iterable and its elements are the selected rows. For each row the columns can be accessed as dictionaries:
 ``images[0]['title']`` or equivalently as ``images[0].title``.
+index action은 이미지 테이블에서 ``db.image.title`` 순으로 모든 필드(``db.image.ALL``)에 select를 수행합니다. select의 결과는 ``Rows`` 오브젝ㄴ트 이며 로케드를 포함하고 있습니다. 지역 변수 ``images``에 지정하고 action에서 view로 전달됩니다. ``images``는 순회가능하고  내부 요소는 선택된 row입니다. 각각의 row에 대해서 컬럼은 dictionary로서 접근 가능합니다.:
+``images[0]['title']`` 또는 ``images[0].title``.
 
 If you do not write a view, the dictionary is rendered by "views/generic.html" and a call to the index action would look like this:
-
+view를 작성하지 않는다면 dictionary는 "views/generic.html"에 의해서 표시되고 index action에 대한 호출은 다음과 같을 것입니다.
 [[image @///image/en2700.png center 480px]]
 
 You have not created a view for this action yet, so web2py renders the set of records in plain tabular form.
-
+이 action에 대해서 아직 view를 생성하지 않았고 그래서 web2py가 보통 테이블 form으로 레코드 셋을 표시합니다.
 Proceed to create a view for the index action. Return to admin, edit "default/index.html" and replace its content with the following:
+index action에 대한 view를 생성을 처리하고 admin으로 되돌아 가서 "default/index.html"을 수정하고 이 내용을 다음과 같이 수정합니다.
 ``
 {{extend 'layout.html'}}
 <h1>Current Images</h1>
@@ -637,49 +700,58 @@ Proceed to create a view for the index action. Return to admin, edit "default/in
 ``:code
 
 The first thing to notice is that a view is pure HTML with special {{...}} tags. The code embedded in {{...}} is pure Python code with one caveat: indentation is irrelevant. Blocks of code start with lines ending in colon (:) and end in lines beginning with the keyword ``pass``. In some cases the end of a block is obvious from context and the use of ``pass`` is not required.
+가장 처음 보아야 할 것은 view는 순수한 HTML이며 특별한 {{...}} 태크를 갖는다는 것입니다. {{..}}에 포함된 코드는 순수한 Python 코드이며 한가지 단점은 들여쓰기가 무의미 하다는 것입니다. 코드 블럭은 라인의 끝이 colon(:)으로 시작하고 ``pass`` 키워드로 끝납니다. 어떤꼉우 블럭의 끝이 명확해서 ``pass``가 필요 없는 경우도 있습니다.
 
 Lines 5-7 loop over the image rows and for each row image display:
+5-7라인의 image rows에 대한 루프를 수행하고 각 row image를 표시합니다.
 ``
 LI(A(image.title, _href=URL('show', args=image.id))
 ``:code
 
 This is a ``<li>...</li>`` tag that contains an ``<a href="...">...</a>`` tag which contains the ``image.title``. The value of the hypertext reference (href attribute) is:
+``<li>...</li>`` 태그는 ``<a href="...">...</a>`` 태그를 포함하고 a 태그는 ``image.title``을 포함합니다. 하이퍼텍스트 (href 속성) 참조 값은 다음과 같습니다.
 ``
 URL('show', args=image.id)
 ``:code
 
 i.e., the URL within the same application and controller as the current request that calls the function called "show", passing a single argument to the function, ``args=image.id``.
+예들 들어 같은 어플리케이션안에 URL과 현재 "show"를 호출하는 controller는 하나의 인수(``args=image.id``)를 함수에 전달하고 있다.
 ``LI``, ``A``, etc. are web2py helpers that map to the corresponding HTML tags. Their unnamed arguments are interpreted as objects to be serialized and inserted in the tag's innerHTML. Named arguments starting with an underscore (for example ``_href``) are interpreted as tag attributes but without the underscore. For example ``_href`` is the ``href`` attribute, ``_class`` is the ``class`` attribute, etc.
-
+``LI``, ``A`` 등은 web2py 헬퍼로써 그에 상응하는 HTML 태그로 매핑됩니다. 이름이 없는 인수의 경우 직렬화 된느 오브젝트로 번역되고 태그의 innterHTML안에 삽입됩니다. 명명된 인수의 경우 underscore(예들 들면 ``_href``)로 시작하고 태그의 속성으로 해석되고 underscore('_')는 제거됩니다. 예를 들어 ``_href``는 ``href`` 속성이 되고 ``_class``는 ``class`` 속성이 됩니다.
 As an example, the following statement:
+예를 들어 다음 문은
 ``
 {{=LI(A('something', _href=URL('show', args=123))}}
 ``:code
 
 is rendered as:
+다음과 같이 표시됩니다.
 ``
 <li><a href="/images/default/show/123">something</a></li>
 ``:code
 
 A handful of helpers (``INPUT``, ``TEXTAREA``, ``OPTION`` and ``SELECT``) also support some special named attributes not starting with underscore (``value``, and ``requires``). They are important for building custom forms and will be discussed later.
-
+또한 몇몇의 헬퍼들(``INPUT``, ``TEXTAREA``, ``OPTION`` and ``SELECT``)은 underscore('_')로 시작하지 않는 특별한 명명된 속성(``value``, ``requires``)을 지원합니다.  이것들은 사용자 form을 만들때 중요하며 다음에 살펴볼 것입니다.
 Go back to the ''edit'' page. It now indicates that "default.py exposes index". By clicking on "index", you can visit the newly created page:
+"edit""페이지로 되돌아가서 "default.py는 index를 노출하고 있다는 것을 지칭합니다.  "index"를 클릭하므로서 새로 생성된 페이지를 방문할 수 있습니다.
 ``
 http://127.0.0.1:8000/images/default/index
 ``:code
 
 which looks like:
-
+이것은 다음과 같이 보여집니다.
 [[image @///image/en2800.png center 480px]]
 
 If you click on the image name link, you are directed to:
+image의 이름 링크를 클릭하면 다음으로 전송됩니다.
 ``
 http://127.0.0.1:8000/images/default/show/1
 ``:code
 
 and this results in an error, since you have not yet created an action called "show" in controller "default.py".
-
+이것은 에러를 발생시킵니다. 왜냐하면 아직 controller "default.py"에 "show"라는 action을 생성하지 않았기 때문입니다.
 Let's edit the "default.py" controller and replace its content with:
+"default.py" controller를 수정하고 다음과 같이 내용을 교체합니다.
 
 ``SQLFORM``:inxx ``accepts``:inxx ``response.flash``:inxx ``request.args``:inxx
 ``response.download``:inxx
