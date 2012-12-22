@@ -191,35 +191,44 @@ Each file listed in the section corresponds to a file physically located in the 
 
 
 The application contains other types of files (database, session files, error files, etc.), but they are not listed on the ''edit'' page because they are not created or modified by the administrator; they are created and modified by the application itself.
+어플리케이션은 여러타입의 파일을 포함하고 있습니다(데이터베이스,세션파일, 에러파일 등). 하지만 edit페이지에는 표시되지 않는데 이파일들은 관리자에의해서 생성되거나 수정되는 것들이 아니기 때문입니다. 이 파일들은 어플리케이션에 의해서 생성되거나 수정됩니다.
 
 The controllers contain the logic and workflow of the application. Every URL gets mapped into a call to one of the functions in the controllers (actions). There are two default controllers: "appadmin.py" and "default.py". **appadmin** provides the database administrative interface; we do not need it now. "default.py" is the controller that you need to edit, the one that is called by default when no controller is specified in the URL. Edit the "index" function as follows:
+controller는 어플리케이션은 로직과 처리흐름을 가지고 있습니다. 모든 URL은 컨트롤러내의 한 함수 호출(action)로 매치됩니다. 기본적으로 "appadmin.py" 와 "default.py" 2개의 controller가 있습니다. **appadmin**은 데이터베이스 관리 인터페이스를 제공하지만 현재는 필요하지는 않습니다. "default.py"는 여러분이 수정해야할 controller입니다. 여기에는 URL에 지정된 controller가 존재하지 않는 경우에 호출됩니다. "index"함수를 다음과 같이 수정합니다. 
 ``
 def index():
     return "Hello from MyApp"
 ``:code
 
 Here is what the online editor looks like:
+온라인 에디터에서 수정할때 모습입니다. 
 
 [[image @///image/en1000.png center 480px]]
 
 Save it and go back to the ''edit'' page. Click on the index link to visit the newly created page.
+저장하고 다시 ''edit'' 페이지로 이동합니다. 새로 생성된 페이지에 방문하기 위해서는 index 링크를 클릭합니다. 
 
 When you visit the URL
+다음 URL을 방문하면
 ``
 http://127.0.0.1:8000/myapp/default/index
 ``:code
 
 the index action in the default controller of the myapp application is called. It returns a string that the browser displays for us. It should look like this:
+myapp 어플리케이션의 기본 controller의 index action이 호출됩니다. 이 함수는 string을 리턴하고 브라우저에서 다음과 같이 표시됩니다.
 
 [[image @///image/en1100.png center 480px]]
 
 Now, edit the "index" function as follows:
+이제 "index"함수를 다음과 같이 수정합니다.
 ``
 def index():
     return dict(message="Hello from MyApp")
 ``:code
 
 Also from the ''edit'' page, edit the view "default/index.html" (the view file associated with the action) and completely replace the existing contents of that file with the following:
+''edit'' 페이지에서 "default/indx.html" view 를 수정합니다. 이 파일은 action과 연관된 view 파일입니다. 그이후 이 파일의 내용을 다음의 내용으로 완전히 교체합니다. 
+
 ``
 <html>
    <head></head>
@@ -230,12 +239,15 @@ Also from the ''edit'' page, edit the view "default/index.html" (the view file a
 ``:code
 
 Now the action returns a dictionary defining a ``message``. When an action returns a dictionary, web2py looks for a view with the name
+이제 action에서는 ``message``를 포함한 딕셔너리를 리턴한다. action이 dictionary를 리턴하는 경우 web2py는 view에서 dictionary에 포함된 name이 있는지 검색한다. 
 
 ``[controller]/[function].[extension]``:code
 
  and executes it. Here [extension] is the requested extension. If no extension is specified, it defaults to "html", and that is what we will assume here. Under this assumption, the view is an HTML file that embeds Python code using special {{ }} tags. In particular, in the example, the ``{{=message}}`` instructs web2py to replace the tagged code with the value of the ``message`` returned by the action. Notice that ``message`` here is not a web2py keyword but is defined in the action. So far we have not used any web2py keywords.
+그리고 실행한다. 여기서 [extension]은 요청한 확장자입니다. 확장자가 지정되어 있지 않는 경우 "html"로 설정되고 이 경우에도 그러합니다. 이 가정하에 view는 HTML파일이고 여기에는 특별한 의미를 갖는 {{ }} 태그를 갖는 Python코드를 포함하고 있습니다. 예제에서 ``{{=message}}``은 web2py에게 tagged된 코드를 action에서 리턴한 ``message``의 값으로 변경하도록 알려줍니다. 여기서 ``message``가 web2py의 예약어가 아니고 action에서 정의한 것이 중요합니다. 지금까지 어떤 web2py 예약어도 사용하지 않았습니다.  
 
 If web2py does not find the requested view, it uses the "generic.html" view that comes with every application.
+만약에 web2py에서 요청한 view를 찾지 못한 경우에 "generic.html"을 사용하게되며 이 파일은 모든 어플리케이션에 포함되어 있습니다. 
 
 -------
 ``Mac Mail``:inxx ``Google Maps``:inxx ``jsonp``:inxx
