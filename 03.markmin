@@ -1686,112 +1686,150 @@ Mercurial 웹 인터페이스는 이전 커밋, 파일 변경사항등을 볼수
 
 
 You can read more about Mercurial here:
+Mercurial에 대한 더 많은 내용은 아래에서 확인할 수 있습니다:
 ``
 http://mercurial.selenic.com/
 ``
 
-#### Admin wizard (experimental)
+#### Admin wizard (experimental) Admin 마법사(실험)
 
 The **admin** interface includes a Wizard that can help you create a new applications.
 You can access the wizard from the "sites" page as shown in the image below.
+**admin** 인터페이스는 새로운 어플리케이션 생성을 도와주는 마법사가 포함되어 있습니다.
 
 [[image @///image/en5400.png center 480px]]
 
 The wizard will guide you through a series of steps involved in creating a new application:
+마법사는 새로운 어플리케이션을 생성할때 여러 단계를 거쳐서 안내할 것입니다:
 
 - Chose a name for the application
 - Configure the application and choose required plugins
 - Build required models (it will create CRUD pages for each model)
 - Allow you to edit the views of those pages using MARKMIN syntax
+- 어플리케이션 이름 정하기
+- 설정하고 필요한 플러그인을 선택
+- 필요한 모델을 빌드하기(각 모델에 대한 CRUD를 생성할 것입니다.)
+- MARKMIN 구문을 이용해서 이런 페이지들의 view를 수정할수 있게 해줍니다.
+
 
 The image below shows the second step of the process.
+아래 이미지는 두번째 단계를 보여줍니다.
 
 [[image @///image/en5500.png center 480px]]
 
 You can see a dropdown to select a layout plugin (from ``web2py.com/layouts``), a multiple choice dropdown to check other plugins (from ``web2py.com/plugins``) and a "login config" field where to put the Janrain "domain:key".
+드랍다운에서 레이아웃 플러그인(``web2py.com/layouts``)을 선택할 수 있고, 다른 플러그인들(``web2py.com/plugins``)을 선택할 수 있습니다. 그리고 Janrain "domain:key"를 설정할 "login config" 필드도 선택할 수 있습니다.
 
 The other steps are pretty much self-explanatory.
+다른 과정은 따로 설명할 필요가 없을 정도로 직관적입니다.
 
 The Wizard works well for what it does but it is considered an ''experimental feature'' for two reasons:
+마법사는 자신에 역활을 잘 수행하기는 하지만 아직 두가지 이유에서 "실험적인 기능"임을 명심해야 합니다:
 
 - Applications created with the wizard and edited manually, cannot later be modified by the wizard.
 - The interface of the wizard will change over time to include support for more features and easier visual development.
+- 마법사로 생성한 어플리케이션을 수동으로 수정한 경우 나중에 마법사에서는 수정할 수 없습니다.
+- 마법사의 인터페이스는 시간이 지남에따라서 변할 것이고 더 많은 기능 지원과 더 쉬운 시각적인 개발을 위한 지원이 추가 될 것이기 때문입니다.
 
 In any case the wizard is a handy tool for fast prototyping and it can be used to bootstrap a new application with an alternate layout and optional plugins.
+어떤 경우이던지 마법사는 빠르게 프로토타이핑을 위한 편리한 툴이며 대체 레이아웃이나 선택적인 플러그인을 가지고 새로운 어플리케이션을 생성할때 사용될 수 있습니다.
 
-#### Configuring **admin**
+#### Configuring **admin**, **admin** 설정하기
 
 Normally there is no need to perform any configuration of admin but a few customizations are possible. After you login into admin you can edit the admin configuration file via the URL:
+보통 admin을 설정할 필요는 없지만  몇가지 사용자 설정이 가능합니다. admin에 로긴한 후에 다음 URL을 통해서 설정 파일을 수정할 수 있습니다.
 ``
 http://127.0.0.1:8000/admin/default/edit/admin/models/0.py
 ``
 Notice that **admin** can be used to edit itself. In fact **admin** is an app as any other one.
+**admin**은 자기 자신을 수정할 수 있으며 **admin**역시 하나의 어플리케이션입니다.
 
 The file "0.py" is very much self documented and if you are opening probably you already know what you are looking for. Anyway few customizations exist that are more important than others:
+"0.py" 파일은 파일 자체에 잘 문서화되어 있으면 이 파일은 연다는 것은 어떤것을 찾고 있는지 이미 잘 알고 있을 것입니다. 어쨌든 다른 것들과 달리 몇가지 사용자 설정이 존재합니다.
 
 ``
 GAE_APPCFG = os.path.abspath(os.path.join('/usr/local/bin/appcfg.py'))
 ``
 This should point to the location of the "appcfg.py" file that comes with the Google App Engine SDK. If you have the SDK you may want to change this config parameters to the correct value. It will allow you to deploy to GAE from the admin interface.
+Google App Engine SDK에 포함된 "appcfg.py"파일의 위치를 나타냅니다.  SDK를 설치했다면 이 파라미터의 값을 그에 맞게 설정해야 할 것입니다. 이 값을 통해서 admin인터페이스에서 GAE로 배포할수 있게 해줍니다.
 
 ``DEMO_MODE``:inxx
 
 You can also set web2py admin in demo mode:
+web2py admin 을 데모 모드로 설정할 수 있습니다:
 ``
 DEMO_MODE = True
 FILTER_APPS = ['welcome']
 ``
 And only the apps listed in filter apps will be accessible and they will be only accessible in read-only mode.
+FILTER_APPS 리스트에 포함된 어플리케이션만이 접근 가능하고 읽기 모드서만 접근 가능합니다.
 
 ``MULTI_USER_MODE``:inxx
 ``virtual laboratory``:inxx
 
 If you are a teacher and want to expose the administrative interface to students so that students can share one administrative interface for their projects (think of a virtual lab), can do it by setting:
+당신이 선생님이고 학생에게 관리자 인터페이스를 제공하기를 원하고 학생들이 하나의 관리자 인터페이스를 그들의 프로젝트(가상의 연구실이라고 생각해봅니다)를 위해 공유할 수 있습니다. 다음과 같이 설정합니다:
 ``
 MULTI_USER_MODE = True
 ``
 In this way students will be required to login and will only be able to access their own apps via admin. You, as first user/teacher, will be able to access them all.
+이런 방법으로 학생들은 로긴을 해야 하고 admin을 통해서 그들 각자의 어플리케이션에만 접근 가능할 것입니다. 첫사용자나 선생님의 경우에는 모든 어플리케이션에 접근 가능할 것입니다.
 
 Mind that this mechanism still assumes all users are trusted. All the apps created under admin run under the same credentials on the same filesystem. It is possible for an app created by a student to access the data and the source of an app created by another student.
+이런 매커니즘은 모든 사용자들이 신뢰할 수 있다고 가정하고 있다는 것을 염두해 두어야 합니다. admin하에서 생성된 모든 어플리케이션은 같은 파일 시스템에서 같은 신뢰관계에서 실행됩니다. 학생에 의해서 생성된 어플리케이션이 다른 학생이 생성한 어플리케이션의 데이타와 소스에 접근하는것이 가능합니다.
 
-### More on **appadmin**
+### More on **appadmin**, **appadmin** 더 알아보기
 
 ``appadmin``:inxx
 
 **appadmin** is not intended to be exposed to the public. It is designed to help you by providing an easy access to the database. It consists of only two files: a controller "appadmin.py" and a view "appadmin.html" which are used by all actions in the controller.
+**appadmin**은 외부에 노출되도록 의도된 것이 아닙니다. 데이터베이스에 쉽게 접근할 수 있는 기능을 제공하기 위해서 설계된 것입니다.  "appadmin.py" controller와 controller안의 모든 action에서 사용하는 "appadmin.html" view 파일 2개로 구성되어 있습니다.
 
 The **appadmin** controller is relatively small and readable; it provides an example of designing a database interface.
+**appadmin** controller는 상대적으로 작고 읽기 쉽습니다. 여기에서는 데이터페이스 인터페이스를 설계하는 예제가 제공됩니다.
 
 **appadmin** shows which databases are available and which tables exist in each database. You can insert records and list all records for each table individually. **appadmin** paginates output 100 records at a time.
+**appadmin**은 어떤 데이터베이스가 가용한지 각 데이터베이스에 어떤 테이블이 존재하는지 보여줍니다. 레코드를 삽입할 수 있고 각각의 테이블에 모든 레코드 목록을 출력할 수 있습니다. ""appadmin""은 한번에 100개의 레코드단위로 출력합니다.
 
 Once a set of records is selected, the header of the pages changes, allowing you to update or delete the selected records.
+하나의 레코드 단위가 select되면 페이지의 header가 변경되고 선택된 레코드를 갱신 삭제할 수 있습니다.
 
 To update the records, enter an SQL assignment in the Query string field:
+레코드를 갱신하기 위해서는 쿼리 스트링 필드에 SQL 대입문을 입력합니다:
 ``
 title = 'test'
 ``:code
 
 where string values must be enclosed in single quotes. Multiple fields can be separated by commas.
+문자열의 경우는 작은 따옴표(')로 감싸야 합니다. 여러 필드의 경우 쉽표(,)로 구분할 수 있습니다.
 
 To delete a record, click the corresponding checkbox to confirm that you are sure.
+레코드를 삭제하는 경우 해당하는 체크박스를 선택합니다.
 
 **appadmin** can also perform joins if the SQL FILTER contains a SQL condition that involves two or more tables. For example, try:
+**appadmin**은 SQL FILTER에 2개 이상의 테이블이 연관된 SQL 조건문을 포함하고 있는 경우 join을 수행할 수 있습니다. 다음과 같이 확인해 보세요:
 ``
 db.image.id == db.comment.image_id
 ``:code
 
 web2py passes this along to the DAL, and it understands that the query links two tables; hence, both tables are selected with an INNER JOIN. Here is the output:
+web2py는 이 것을 DAL에 전달하고 두 테이블의 쿼리 링크를 이해하고 INNER JOIN으로 두개의 테이블이 선택됩니다. 다음과 같이 출력됩니다.
 
 [[image @///image/en5600.png center 480px]]
 
 If you click on the number of an id field, you get an edit page for the record with the corresponding id.
+id 필드의 수를 클릭하면  id에 해당하는 레코드를 편집할 수 있는 페이지를 볼 수 있습니다.
 
 If you click on the number of a reference field, you get an edit page for the referenced record.
+참조 필드의 수를 클릭하면 참조 필드에 대한 편집 페이지를 볼 수 있습니다.
 
 You cannot update or delete rows selected by a join, because they involve records from multiple tables and this would be ambiguous.
+join으로 선택된 row들은 갱신하고 삭제할 수 없습니다. 왜냐하면 이 레코드 들은 다수의 테이블에서 얻어진 것이고 어떤 테이블에 속하는지 모호하기 때문입니다.
 
 In addition to its database administration capabilities, **appadmin** also enables you to view details about the contents of the application's ``cache`` (at ``/yourapp/appadmin/ccache``) as well as the contents of the current ``request``, ``response``, and ``session`` objects (at ``/yourapp/appadmin/state``).
+데이터베이스 관리 기능에 덧붙여 **appadmin**은 어플리케이션의 ''cache''(''/yourapp/apamdin/ccache'')의 자세한 내용을 확인 할수도 있으면 ``request``, ``response``, ``session``(``/yourapp/appadmin/state``)객체에 현재 값 또한 확인 할 수 있습니다.
 
 ------
 **appadmin** replaces ``response.menu`` with its own menu, which provides links to the application's **edit** page in **admin**, the **db** (database administration) page, the **state** page, and the **cache** page. If your application's layout does not generate a menu using ``response.menu``, then you will not see the **appadmin** menu. In that case, you can modify the appadmin.html file and add ``{{=MENU(response.menu)}}`` to display the menu.
+**appadmin** 은 ``response.menu``를 자신의 메뉴로 변경합니다. 여기에는 어플리케이션 **admin**의 **edit** 페이지, **db** 페이지, **state** 페이지, **cache**페이지를 연결하는 링크를 제공합니다. 만약에 어플리케이션 레이아웃이 ``response.menu``를 이용해서 메뉴를 생성하지 않는 다면 **appadmin** 메뉴를 볼 수 없습니다. 이 경우 appadmin.html파일을 수정해서 ``{{=MENU(response.menu))}}``를 이용해서 메뉴를 표시할 수 있습니다.
 ------
