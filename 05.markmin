@@ -1251,7 +1251,7 @@ This is used to tag table header rows.
 ``TITLE``:inxx
 
 This is used to tag the title of a page in an HTML header.
-HTML헬퍼안에 페이지의 타이틀을 테그하는데 사용됩니다.
+HTML헬퍼안에 페이지의 타이틀을 태그화하는데 사용됩니다.
 ``
 >>> print TITLE('<hello>', XML('<b>world</b>'))
 <title>&lt;hello&gt;<b>world</b></title>
@@ -1261,7 +1261,7 @@ HTML헬퍼안에 페이지의 타이틀을 테그하는데 사용됩니다.
 ``TR``:inxx
 
 Tags a table row. It should be rendered inside a table and contain ``<td>...</td>`` tags. ``TR`` arguments that are not ``TD`` objects will be automatically converted.
-테이블 행을 태그합니다. 이것은 테이블 내부에서 표시되어야 하고 ``<td>...</td>``태그를 포함합니다. ``TD``객체가 아닌 ``TR`` 인자는 자동으로 변환됩니다.
+테이블 행을 태그화합니다. 이것은 테이블 내부에서 표시되어야 하고 ``<td>...</td>``태그를 포함합니다. ``TD``객체가 아닌 ``TR`` 인자는 자동으로 변환됩니다.
 ``
 >>> print TR('<hello>', XML('<b>world</b>'), _class='test', _id=0)
 <tr id="0" class="test"><td>&lt;hello&gt;</td><td><b>world</b></td></tr>
@@ -1271,7 +1271,7 @@ Tags a table row. It should be rendered inside a table and contain ``<td>...</td
 ``TT``:inxx
 
 Tags text as typewriter (monospaced) text.
-텍스트를 타자기 텍스트로 태그합니다.
+텍스트를 타자기 텍스트로 태그화합니다.
 ``
 >>> print TT('<hello>', XML('<b>world</b>'), _class='test', _id=0)
 <tt id="0" class="test">&lt;hello&gt;<b>world</b></tt>
@@ -1280,7 +1280,7 @@ Tags text as typewriter (monospaced) text.
 ##### ``UL``
 
 Signifies an Unordered List and should contain LI items. If its content is not tagged as LI, UL does it automatically.
-
+순서없는 리스트를 나타내면 LI를 포함해야 합니다. UL의 컨텐트가 LI로 태그되지 않았다면 UL이 자동으로 태그화 합니다.
 
 ``UL``:inxx
 ``
@@ -1291,16 +1291,21 @@ Signifies an Unordered List and should contain LI items. If its content is not t
 ##### ``embed64``
 
 ``embed64(filename=None, file=None, data=None, extension='image/gif')`` encodes the provided (binary) data into base64.
+``embed64(filename=None, file=None, data=None, extension='image/gif')`` (바이너리) 테이터를 base64로 인코딩합니다.
 
 filename: if provided, opens and reads this file in 'rb' mode.
 file: if provided, reads this file.
 data: if provided, uses the provided data.
+filename: 주어진 경우 'rb'모드로 열고 파일을 읽습니다.
+file: 주어진경우, 파일을 읽습니다.
+data: 주어진 경우, 데이터를 사용합니다.
 
 ``embed64``:inxx
 
 ##### ``xmlescape``
 
 ``xmlescape(data, quote=True)`` returns an escaped string of the provided data.
+``xmlescape(data, quote=True)`` 데이터를 escape된 문자열로 반환합니다.
 
 ``xmlescape``:inxx
 ``
@@ -1314,29 +1319,36 @@ data: if provided, uses the provided data.
 ``TAG``:inxx
 
 Sometimes you need to generate custom XML tags. web2py provides ``TAG``, a universal tag generator.
+때로는 사용자 XML 태그를 생성해야 할때가 있습니다. Web2py는 ``TAG``라는 범용적인 태그 생성기를 제공합니다.
 ``
 {{=TAG.name('a', 'b', _c='d')}}
 ``:code
 
 generates the following XML
+다음과 같은 XML을 생성합니다.
 ``
 <name c="d">ab</name>
 ``:code
 
 Arguments "a", "b", and "d" are automatically escaped; use the ``XML`` helper to suppress this behavior. Using ``TAG`` you can generate HTML/XML tags not already provided by the API. TAGs can be nested, and are serialized with ``str().``
+인자 "a", "b", "d"는 자동으로 escape되기때문에 , 자동 변환를 막기 위해서 ``XML`` 헬퍼를 사용합니다. ``TAG``를 사용해서 API로 제공하지 않는 HTML/XML 태그를 생성할수 있습니다.  TAG는 중첩될수 있고 ``str0``를 통해서 직렬화할 수 있습니다.
 An equivalent syntax is:
+동일한 구문은 다음과 같습니다.
 ``
 {{=TAG['name']('a', 'b', c='d')}}
 ``:code
 
 If the TAG object is created with an empty name, it can be used to concatenate multiple strings and HTML helpers together without inserting them into a surrounding tag, but this use is deprecated. Use the ``CAT`` helper instead.
+TAG 객체가 빈 이름으로 생성된 경우 다수의 스트링을 합치고 HTML 헬퍼들이 둘러싸는 태그를 생성하지 않고 함께 합니다. 하지만 이것은 폐지예정이며 ``CAT`` 헬퍼를 사용하세요.
 
 Notice that ``TAG`` is an object, and ``TAG.name`` or ``TAG['name']`` is a function that returns a temporary helper class.
+``TAG``는 객체이고 ``TAG.name``이나 ``TAG['name']``는 임시 헬퍼 클래스를 반환하는 함수라는 사실에 주목하세요.
 
 ##### ``MENU``
 ``MENU``:inxx
 
 The MENU helper takes a list of lists or of tuples of the form of ``response.menu`` (as described in Chapter 4) and generates a tree-like structure using unordered lists representing the menu. For example:
+MENU  헬퍼는 리스트의 리스트나 ``response.menu``의 형태와 같은 튜플에 대한 리스트 (4장에서 설명)를 취하고 메뉴를 나타내는 순서없는 리스트를 이용해서 트리와 같이 구조를 생성합니다.
 ``
 >>> print MENU([['One', False, 'link1'], ['Two', False, 'link2']])
 <ul class="web2py-menu web2py-menu-vertical">
@@ -1346,6 +1358,7 @@ The MENU helper takes a list of lists or of tuples of the form of ``response.men
 ``:code
 
 Each menu item can have a fourth argument that is a nested submenu (and so on recursively):
+각 메뉴 아이템은 4번째 인자를 갖고 이것은 중첩된 부메뉴를 나타닙니다.(이런식으로 재귀적으로 정의됩니다.):
 ``
 >>> print MENU([['One', False, 'link1', [['Two', False, 'link2']]]])
 <ul class="web2py-menu web2py-menu-vertical">
@@ -1359,30 +1372,42 @@ Each menu item can have a fourth argument that is a nested submenu (and so on re
 ``:code
 
 A menu item can also have an optional 5th element, which is a boolean. When false, the menu item is ignored by the MENU helper.
+또한 하나의 메뉴 아이템은 선택적으로 다섯번째 요소를 가질수 있는데 그것은 boolean입니다. false인 경우는 메뉴 아이템이 MENU헬퍼에 의해서 무시됩니다.
 
 The MENU helper takes the following optional arguments:
 - ``_class``: defaults to "web2py-menu web2py-menu-vertical" and sets the class of the outer UL elements.
 - ``ul_class``: defaults to "web2py-menu-vertical" and sets the class of the inner UL elements.
 - ``li_class``: defaults to "web2py-menu-expand" and sets the class of the inner LI elements.
+MENU 헬퍼는 다음과 같은 선택적은 인자를 갖습니다.
+- ``_class``: 는 "web2py-menu web2py-menu-vertical"의 기본값이 주어지고 바깥 UL 요소의 클래스를 설정합니다.
+- ``ul_class``는 "web2py-menu-vertical"로 기본값이 주어지고 내부 UL요소의 클래스를 설정합니다.
+-. ``li_class``는 "web2py-menu-expand"로 기본값이 주어지고 내부 LI요소의 클래스를 설정합니다.
+
 
 ``mobile``:inxx
 
 ``MENU`` takes an optional argument ``mobile``. When set to ``True`` instead of building a recursive ``UL`` menu structure it returns a ``SELECT`` dropdown with all the menu options and a ``onchange`` attribute that redirects to the page corresponding to the selected option. This is designed an an alternative menu representation that increases usability on small mobile devices such as phones.
+``MENU``는  임의의 인자 ``mobile``을 갖습니다. 재귀적인 ``True``로 설정하면 ``UL`` 메뉴 구조를 재귀적으로 만드는것 대신에 모든 메뉴 옵션들을 갖는 ``SELECT`` dropdown을 리턴하고 메뉴 옵션과 선택된 옵션에 해당하는 페이지로 리다이렉트하는 ``onchange`` 속성을 리턴한다. 폰과 같은 작은 장치에서 사용성이 증가될 수 있도록 표시하는 대체 메뉴를 나타내도록 설계되었다. 
 
 Normally the menu is used in a layout with the following syntax:
+보통 메뉴는 다음과 같은 구문으로 레이아웃에서 사용된다.
 
 ``
 {{=MENU(response.menu, mobile=request.user_agent().is_mobile)}}
 ``
 
 In this way a mobile device is automatically detected and the menu is rendered accordingly.
+이런 방법으로 모바일 장치는 자동적으로 인식되고 메뉴는 그에따라 표시되어집니다.
 
 ### ``BEAUTIFY``
 ``BEAUTIFY`` is used to build HTML representations of compound objects, including lists, tuples and dictionaries:
+``BEAUTIFY``는 리스트, 튜플, 사전등을 포함하고 있는 복합객체를 나타내는 HTML을 생성하는데 사용된다.
 ``
 {{=BEAUTIFY({"a": ["hello", XML("world")], "b": (1, 2)})}}
 ``:code
 ``BEAUTIFY`` returns an XML-like object serializable to XML, with a nice looking representation of its constructor argument. In this case, the XML representation of:
+``BEAUTIFY``는 XML로 객체 직렬화할수 있는 XML과 같은 객체를 리턴한다. 
+TBD
 ``
 {"a": ["hello", XML("world")], "b": (1, 2)}
 ``:code
