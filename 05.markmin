@@ -1406,7 +1406,7 @@ In this way a mobile device is automatically detected and the menu is rendered a
 {{=BEAUTIFY({"a": ["hello", XML("world")], "b": (1, 2)})}}
 ``:code
 ``BEAUTIFY`` returns an XML-like object serializable to XML, with a nice looking representation of its constructor argument. In this case, the XML representation of:
-``BEAUTIFY``는 XML로 객체 직렬화할수 있는 XML과 같은 객체를 리턴한다. 
+``BEAUTIFY``는 XML로 객체 직렬화할수 있는 XML같은  객체를 리턴한다.  
 TBD
 ``
 {"a": ["hello", XML("world")], "b": (1, 2)}
