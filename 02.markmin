@@ -1,26 +1,46 @@
 
 ## The Python language
+## 파이톤 언어
 ``Python``:inxx
 
 ### About Python
+### 파이톤 언어에 대하여
 Python is a general-purpose high-level programming language.
 Its design philosophy emphasizes programmer productivity and code readability. It has a minimalist core syntax with very few basic commands and simple semantics, but it also has a large and comprehensive standard library, including an Application Programming Interface (API) ``API``:inxx to many of the underlying operating system (OS) functions. Python code, while minimalist, defines built-in objects such as linked lists (``list``), tuples (``tuple``), hash tables (``dict``), and arbitrarily long integers (``long``).
+파이톤은 모든 면에서 이용가능한 high-level 프로그래밍 언어입니다.
+파이톤은 프로그래머의 생산 그리고 읽기 쉬운 언어를 중요시하는 언어입니다. 신택스,기본 명령어,의미론을 최소하였으며, 기본 라이브러리와 ``API``:inxx 를 이용하여 운영체제와 쉽게 연결을 가능하게 만드는 언어입니다. 파이톤 코드는 linked lists (``list``), tuples (``tuple``), hash tables (``dict``), and arbitrarily long integers (``long``) 이 포함 되어있습니다.
+
 
 Python supports multiple programming paradigms, including object-oriented (``class``), imperative (``def``), and functional (``lambda``) programming. Python has a dynamic type system and automatic memory management using reference counting (similar to Perl, Ruby, and Scheme).
 
+파이톤은 꽤 많은 프로그래밍 파라다임을 후원하고있으며, 추상화 (``class``), imperative (``def``), and functional (``lambda``) 프로그래밍 입니다. 파이톤은 다이내믹한 타입 시스템을 가지고있으며 Perl,Ruby, 그리고 Scheme 에서 쓰이는 reference counting 을 이용하여 자동화된 메모리 관리 시스템을 가지고 있습니다.
+
 Python was first released by Guido van Rossum in 1991. The language has an open, community-based development model managed by the non-profit Python Software Foundation. There are many interpreters and compilers that implement the Python language, including one in Java (Jython) but, in this brief review, we refer to the reference C implementation created by Guido.
+파이톤은 Guido van Rossum 에의하여 1991년에 탄생하였습니다. 파이톤은 오픈화 되있는 언어로써 Python Software Foundation에 의하여 관리 되었습니다.
+
 
 You can find many tutorials, the official documentation and library references of the language on the official Python website.``python``:cite
+인제는 파이톤 정식 웹사이트에서는 많은 문서들,강좌들 그리고 또한 라이브러리 문서들을 찾으실 수있습니다.  ``python``:cite
 
 For additional Python references, we can recommend the books in ref.``guido``:cite  and ref.``lutz``:cite .
-
+또한 파이톤에서 더알고싶으시면 이 책들을 추천하겠습니다. ``guido``:cite  그리고 ref.``lutz``:cite .
 You may skip this chapter if you are already familiar with the Python language.
+만약에 파이톤에 대해서 잘 알고계시다면 다음 장으로 넘어가셔도 됩니다. 
 
 ### Starting up
 ``shell``:inxx
 The binary distributions of web2py for Microsoft Windows or Apple OS X come packaged with the Python interpreter built into the distribution file itself.
 
+### Starting up
+``shell``:inxx
+윈도우에서나 아니면 맥 OS X 에서 돌릴수있는 바이너리화 된 Web2py에는 이미 파이톤 interpreter가 이미 들어가있기 때문에 쉽게 실행 하실수 있습니다.
+
 You can start it on Windows with the following command (type at the DOS prompt):
+``
+web2py.exe -S welcome
+``:code
+
+아래 명령어를 사용하여 윈도우에서 실행할수있습니다.(도스창에서 다음명령어를 실행하세요):
 ``
 web2py.exe -S welcome
 ``:code
@@ -30,16 +50,35 @@ On Apple OS X, enter the following command type in a Terminal window (assuming y
 ./web2py.app/Contents/MacOS/web2py -S welcome
 ``:code
 
+맥 OS X 에서는 터미널을 실행후 다음 명령어를 실행하시면 됩니다.(web2py.app 들어가있는 폴더에서 다음 명령어를 실행하세요):
+``
+./web2py.app/Contents/MacOS/web2py -S welcome
+``:code
+
 On a Linux or other Unix box, chances are that you have Python already installed. If so, at a shell prompt type:
+``
+python web2py.py -S welcome
+``:code
+
+리눅스 환경에서는 다음과 같이 명령어를 사용하시면됩니다.(파이톤 Interpreter가 이미 설치되있으셔야 합니다)
 ``
 python web2py.py -S welcome
 ``:code
 
 If you do not have Python 2.5 (or later 2.x) already installed, you will have to download and install it before running web2py.
 
+만약에 파이톤 2.5 아니면 더높은 버젼의 2.x 가 설치가 안되있다면, 다운로드를 받아서 설치하시기 바랍니다. 
+
 The ``-S welcome`` command line option instructs web2py to run the interactive shell as if the commands were executed in a controller for the **welcome** application, the web2py scaffolding application. This exposes almost all web2py classes, objects and functions to you. This is the only difference between the web2py interactive command line and the normal Python command line.
 
+``-S welcome`` 옵션은 명령어들이 **welcome** 애플리케이션 안의 controller 에서 실행된거같이 web2py가 interactive shell 을 실행 시킵니다. 이로인해 web2py의 모든 환경요소들을 보여줍니다. 이 사실때문에 web2py interactive command line 과 기본 파이톤 command line 가 다른 이유입니다.
+
 The admin interface also provides a web-based shell for each application. You can access the one for the "welcome" application at.
+``
+http://127.0.0.1:8000/admin/shell/index/welcome
+``:code
+
+운영자 페이지는 웹환경으로 되어있으며, 모든 애플리케이션들을 관리할수있게되어있습니다. 아래 주소는 "welcome" 애플리케이션을 관리하는 페이지입니다.
 ``
 http://127.0.0.1:8000/admin/shell/index/welcome
 ``:code
@@ -49,9 +88,17 @@ You can try all the examples in this chapter using the normal shell or the web-b
 ### help, dir
 ``help``:inxx ``dir``:inxx
 
+요번 장에서는 모든 예제들을 보통 shell 이나 하니면 웹환경으로된 shell 에서 실행하실수 있습니다. 
+
+### help, dir
+``help``:inxx ``dir``:inxx
+
 The Python language provides two commands to obtain documentation about objects defined in the current scope, both built-in and user-defined.
 
+파이톤 언어는 두 명령어(built-in 그리고 user-defined)를 제공하고있으며,또한 현재 범위에서 사용한 object들에 대한 문서들을 찾으실수있습니다, 
+
 We can ask for ``help`` about an object, for example "1":
+''help''라는 명령어로 object 에 대하여 찾으실수있습니다. 예제로 "1":
 ``
 >>> help(1)
 Help on int object:
@@ -75,7 +122,10 @@ class int(object)
 
 and, since "1" is an integer, we get a description about the ``int`` class and all its methods. Here the output has been truncated because it is very long and detailed.
 
+또한, 1 은 숫자이므로, ''int''클래스에 대한 설명을 보실수 있습니다. 출력된 설명은 너무 길고 구체화되어있기때문에 다 표시하지는 않습니다.
+
 Similarly, we can obtain a list of methods of the object "1" with the command ``dir``:
+유사하게, ``dir`` 명령어를 이용하여 "1"과 관련된 methods 리스트를 보실수있습니다.
 ``
 >>> dir(1)
 ['__abs__', '__add__', '__and__', '__class__', '__cmp__', '__coerce__',
@@ -94,6 +144,11 @@ Similarly, we can obtain a list of methods of the object "1" with the command ``
 ``type``:inxx
 Python is a dynamically typed language, meaning that variables do not have a type and therefore do not have to be declared. Values, on the other hand, do have a type. You can query a variable for the type of value it contains:
 ``
+### Types
+``type``:inxx
+파이톤은 다이나믹한 언어이기때문에 변수의 유형을 지정할필요없이 자동적으로 정해줍니다. 아래 예제를 보시기 바랍니다.:
+``
+
 >>> a = 3
 >>> print type(a)
 <type 'int'>
@@ -107,10 +162,15 @@ Python is a dynamically typed language, meaning that variables do not have a typ
 
 Python also includes, natively, data structures such as lists and dictionaries.
 
+파이톤은 또한 lists 그리고 dictionaries 데이터 구조 를 이용하여 데이터를 저장할수있습니다.
+
 #### ``str``
 ``str``:inxx ``ASCII``:inxx ``UTF8``:inxx ``Unicode``:inxx ``encode``:inxx
 
 Python supports the use of two different types of strings: ASCII strings and Unicode strings. ASCII strings are delimited by '...', "..." or by '''..''' or """...""". Triple quotes delimit multiline strings. Unicode strings start with a ``u`` followed by the string containing Unicode characters. A Unicode string can be converted into an ASCII string by choosing an encoding for example:
+
+파이톤에는 두가지 문자 유형이 있습니다: ASCII 그리고 Unicode. ASCII문자들은  '...', "..." 아니면 '''..''' 아니면 """...""". 이렇게 범위를 정합니다. """ 따옴표는 한줄이상의 문장들의 범위를 정합니다. Unicode 는 ``u``와 다른 Unicode 캐릭터로된 문장과 시작합니다. Unicode 는 ASCII 문장으로 바꿀수있습니다. 아래 예제를 참고하세요. 
+
 ``
 >>> a = 'this is an ASCII string'
 >>> b = u'This is a Unicode string'
@@ -119,7 +179,10 @@ Python supports the use of two different types of strings: ASCII strings and Uni
 
 After executing these three commands, the resulting ``a`` is an ASCII string storing UTF8 encoded characters. By design, web2py uses UTF8 encoded strings internally.
 
+위의 예제에서 이용된 3가지 코맨드를 실행하고나면 ``a`` 는 UTF8 으로된 ASCII 문장으로 바꿔집니다. web2py는 자체적으로 UTF8으로 인코딩 되어있습니다. 
+
 It is also possible to write variables into strings in various ways:
+아래와같은 방법으로 문자열 변수를 바꿀수있습니다.
 ``
 >>> print 'number is ' + str(3)
 number is 3
@@ -130,8 +193,9 @@ number is 3
 ``:code
 
 The last notation is more explicit and less error prone, and is to be preferred.
-
 Many Python objects, for example numbers, can be serialized into strings using ``str`` or ``repr``. These two commands are very similar but produce slightly different output. For example:
+맨마지막 코맨드는 분명하며 제일 추천하는 방법입니다. 많은 파이톤 객채들중에 예제로 숫자들은 ``str`` 아니면 ``repr``를 이용하여 문자열로 바꿀수있습니다. 그리고 이 두 코맨드들은 매우 비슷하지만 출력은 조금 다릅니다.
+예제:
 ``
 >>> for i in [3, 'hello']:
         print str(i), repr(i)
@@ -141,7 +205,10 @@ hello 'hello'
 
 For user-defined classes, ``str`` and ``repr`` can be defined/redefined using the special operators ``__str__`` and ``__repr__``. These are briefly described later on; for more, refer to the official Python documentation``pydocs``:cite . ``repr`` always has a default value.
 
+사용자가 정한 클래스들은, ``str`` 그리고 ``repr`` 가아닌 ``__str__`` 그리고 ``__repr__`` 로 유형을 바꿀수있습니다.. 나중에 더 자세하게 나와있지만 더알고싶으시다면 파이톤 설명서를 보시기 바랍니다.``pydocs``:cite . ``repr`` 는 언제나 기본 Value 를 가지고있습니다.
+
 Another important characteristic of a Python string is that, like a list, it is an iterable object.
+파이톤 문자열의 중요한 것중하나는 리스트와비슷하게 문자열을 탐색할수있습니다.
 ``
 >>> for i in 'hello':
         print i
@@ -156,6 +223,7 @@ o
 ``list``:inxx
 
 The main methods of a Python list are append, insert, and delete:
+파이톤 리스트에는 append, insert, 그리고 delete기능이 있습니다.
 ``
 >>> a = [1, 2, 3]
 >>> print type(a)
@@ -170,6 +238,7 @@ The main methods of a Python list are append, insert, and delete:
 ``:code
 
 Lists can be sliced:
+리스트들은 잘라질수도있습니다.
 ``
 >>> print a[:3]
 [2, 7, 3]
@@ -180,6 +249,7 @@ Lists can be sliced:
 ``:code
 
 and concatenated:
+그리고 같이 합칠수도있습니다.
 ``
 >>> a = [2, 3]
 >>> b = [5, 6]
@@ -188,6 +258,7 @@ and concatenated:
 ``:code
 
 A list is iterable; you can loop over it:
+리스트안을 탐색할수있습니다.
 ``
 >>> a = [1, 2, 3]
 >>> for i in a:
@@ -200,6 +271,10 @@ A list is iterable; you can loop over it:
 The elements of a list do not have to be of the same type; they can be any type of Python object.
 
 There is a very common situation for which a ''list comprehension'' can be used.  Consider the following code:
+
+리스트의 요소들이 꼭 다 같은 유형이지 않아도 됩니다; 파이톤에서 제공하는 유형이라면 리스트안에 저장할수있습니다.
+''list comprehension''을 써야할때가있습니다. 아래 코드를 보시기 바랍니다.
+
 ``
 >>> a = [1,2,3,4,5]
 >>> b = []
@@ -211,6 +286,7 @@ There is a very common situation for which a ''list comprehension'' can be used.
 ``:code
 
 This code clearly processes a list of items, selects and modifies a subset of the input list, and creates a new result list, and this code can be entirely replaced with the following list comprehension:
+위에 코드는 리스트안에있는 요소들을 선택하고 수정하여 새로운 리스트를 만들수있습니다 그리고 위에코드 이외 아래 코드를 사용하실수있습니다.
 ``
 >>> a = [1,2,3,4,5]
 >>> b = [x * 3 for x in a if x % 2 == 0]
@@ -222,11 +298,13 @@ This code clearly processes a list of items, selects and modifies a subset of th
 ``tuple``:inxx
 
 A tuple is like a list, but its size and elements are immutable, while in a list they are mutable. If a tuple element is an object, the object attributes are mutable. A tuple is delimited by round brackets.
+tuple은 list 와 비슷합니다 하지만 사이즈 그리고 tuple 요소들은 변경할수없습니다. (리스트는 변경이 가능합니다) 만약에 tuple 요소들이 객채라면, 객채 속성은 변경이 가능합니다. tuple은 ( , ) 를 이용하여 표시합니다.
 ``
 >>> a = (1, 2, 3)
 ``:code
 
 So while this works for a list:
+아래는 리스트를이용하여 요소를 바꿀있습니다.
 ``
 >>> a = [1, 2, 3]
 >>> a[1] = 5
@@ -235,6 +313,7 @@ So while this works for a list:
 ``:code
 
 the element assignment does not work for a tuple:
+하지만 tuple안에있는 요소는 아래와같이 바꿀수없습니다.
 ``
 >>> a = (1, 2, 3)
 >>> print a[1]
