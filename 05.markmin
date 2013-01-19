@@ -2,7 +2,7 @@
 ``views``:inxx ``template language``:inxx ``HTML``:inxx
 
 web2py uses Python for its models, controllers, and views, although it uses a slightly modified Python syntax in the views to allow more readable code without imposing any restrictions on proper Python usage.
-Web2py는 model, controller, view를 위해서 Python을 이용한다. View에서는 Python사용에 어떤 제약을 주지 않으면서도 코드를 좀 더 읽기 쉽게 만들기 위해 Python 구문을 약간 수정해서 사용합니다.
+Web2py는 model, controller, view를 위해서 Python을 이용합니다. View에서는 Python사용에 어떤 제약을 주지 않으면서도 코드를 좀 더 읽기 쉽게 만들기 위해 Python 구문을 약간 수정해서 사용합니다.
 
 The purpose of a view is to embed code (Python) in an HTML document. In general, this poses some problems:
 - How should embedded code be escaped?
