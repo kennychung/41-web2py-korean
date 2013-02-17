@@ -1,22 +1,28 @@
-## Services
+﻿## Services 서비스
 ``Web Services``:inxx ``API``:inxx
 
 The W3C defines a web service as "a software system designed to support interoperable machine-to-machine interaction over a network". This is a broad definition, and it encompasses a large number of protocols designed not for machine-to-human communication, but for machine-to-machine communication such as XML, JSON, RSS, etc.
+W3C는 웹서비스를 다음과 같이 정의한다. "네트웍을 통한 기계와 기계간의 상호 작용을 지원하도록 설계된 소프트웨어 시스템이다". 이것은 광범위한 정의이며 또한 기계대 사람간 통신이 아닌 많은 수의 기계 대 기계간의 통신(XML, JSON, RSS등) 프로토콜을 포함합니다. 
 
 In this chapter we discuss how to expose web services using web2py. If you are interested in examples of consuming third party services (Twitter, Dropbox, etc.) you should look into Chapter 9 and Chapter 14.
+이번장에서는 Web2py를 이용해서 웹 서비스를 제공하는 방법에 대해서 살펴볼 것입니다. 외부 서비스(트위터, 드랍박스등)를 사용하는 예제에 흥미가 있다면 9장과 14장을 살펴보아야 합니다.
 
 web2py provides, out of the box, support for many protocols, including XML, JSON, RSS, CSV, XMLRPC, JSONRPC, AMFRPC, and SOAP. web2py can also be extended to support additional protocols.
+Web2py는 기본적으로 XML, JSON, RSS, CSV, XMLRPC, JSONRPC, AMFRC, SOAP등의  프로토콜을 지원합니다.  또한 Web2py는 추가적인 프로토콜을 지원하도록 확장될 수 있습니다.
 
 Each of those protocols are supported in multiple ways, and we make a distinction between:
-- Rendering the output of a function in a given format (for example XML, JSON, RSS, CSV)
-- Remote Procedure Calls (for example XMLRPC, JSONRPC, AMFRPC)
+이런 프로토콜 각각은 여러가지 방법으로 지원되며 다음과 같이 구분합니다:
+- Rendering the output of a function in a given format (for example XML, JSON, RSS, CSV) 주어진 포맷(예를 들면 XML, JSON,RSS, CSV)으로 함수의 출력을 렌더링
+- Remote Procedure Calls (for example XMLRPC, JSONRPC, AMFRPC) 원격 프로시져 호출(예를 들어 XMLRPC, JSONRPC, AMFRPC등)
 
-### Rendering a dictionary
+
+### Rendering a dictionary 사전 렌더링
 
 #### HTML, XML, and JSON
 ``HTML``:inxx ``XML``:inxx ``JSON``:inxx
 
 Consider the following action:
+다음과 같은 액션이 있다고 한다면:
 ``
 def count():
     session.counter = (session.counter or 0) + 1
@@ -24,14 +30,16 @@ def count():
 ``:code
 
 This action returns a counter that is increased by one when a visitor reloads the page, and the timestamp of the current page request.
-
+이 액션은 카운터를 리턴합니다. 이것은 방문자가 페이지를 로드할때 1씩 증가합니다. 그리고 현재 페이지 요청의 시간표시값이 갱신됩니다.
 Normally this page would be requested via:
+보통 이 페이지는 다음과 같이 요청합니다:
 
 ``
 http://127.0.0.1:8000/app/default/count
 ``:code
 
 and rendered in HTML. Without writing one line of code, we can ask web2py to render this page using different protocols by adding an extension to the URL:
+그리고 HTML로 표시됩니다. 코드 한 줄 작성하지 않고 URL에 확장자를 추가해서 다른 프로토콜을 이용해서 이 페이지를 표시하도록 Web2py에 요청할 수 있습니다:
 
 ``
 http://127.0.0.1:8000/app/default/count.html
@@ -40,8 +48,10 @@ http://127.0.0.1:8000/app/default/count.json
 ``:code
 
 The dictionary returned by the action will be rendered in HTML, XML and JSON, respectively.
+이 액션에서 반환한 딕셔너리는 각각 HTML, XML, JSON으로 표시될 것입니다. 
 
 Here is the XML output:
+다음은 XML 출력입니다:
 ``
 <document>
    <counter>3</counter>
@@ -50,38 +60,44 @@ Here is the XML output:
 ``:code
 
 Here is the JSON output:
+다음은 JSON 출력입니다.
 ``
 { 'counter':3, 'now':'2009-08-01 13:00:00' }
 ``:code
 
 Notice that date, time and datetime objects are rendered as strings in ISO format. This is not part of the JSON standard, but rather a web2py convention.
+날짜, 시간, 날짜시간 객체가 ISO 포맷의 문자열로 표시된다는 것에 주목하세요. 이것은 JSON 표준의 일부가 아닌 Web2py의 규칙입니다.
 
-#### Generic views
+#### Generic views 제너릭 뷰들
 
 When, for example, the ".xml" extension is called, web2py looks for a template file called "default/count.xml", and if it does not find it, looks for a template called "generic.xml".  The files "generic.html", "generic.xml", "generic.json" are provided with the current scaffolding application. Other extensions can be easily defined by the user.
+예를들어 ".xml"확장자가 호출되면 Web2py는 템플릿 파일 "default/count.xml"을 검색하고 존재하지 않으면 "generic.xml"의 이름을 갖는 템플릿 파일을 검색합니다. "generic.html", "genric.xml", "genric.json" 파일들은 기본 생성 어플리케이션에 포함되어 있습니다. 다른 확장들도 사용자가 쉽게 정의 할 수 있습니다.
 
 ------
 For security reasons the generic views are only allowed to be accessed on localhost. In order to enable the access from remote clients you may need to set the response.generic_patterns.
+보안을 위해서 generic view는 localhost에서만 접근이 허용됩니다. remote 클라이언트에서 접근하도록 설정하기 위해서는 response.generic_patterns를 설정해야 합니다.
 ------
 Assuming you are using a copy of scaffold app, edit the following line in models/db.py
+기본 생성 어플리케이션의 복사몬을 이용하고 있다고 가정해봅니다. models/db.py의 다음 라인을 수정합니다.
 
-- restrict access only to localhost
+- restrict access only to localhost 로컬호스트localhost에만 접근 가능하도록 제한
 ``
 response.generic_patterns = ['*'] if request.is_local else []
 ``:code
 
-- to allow all generic views
+- to allow all generic views 모든 generic view를 접근 가능하도록 설정
 ``
 response.generic_patterns = ['*']
 ``:code
 
-- to allow only .json
+- to allow only .json .json만 접근 가능하도록 설정
 
 ``
 response.generic_patterns = ['*.json']
 ``:code
 
 The generic_patterns is a glob pattern, it means you can use any patterns that matches with your app actions or pass a list of patterns.
+generic_patterns는 덩어리 패턴입니다. 즉 app의 action과 일치한느 어떤 패턴이던 사용할수 있다는 의미이며 또는 패턴 목록을 전달할 수 있습니다.
 
 ``
 response.generic_patterns = ['*.json','*.xml']
@@ -89,8 +105,10 @@ response.generic_patterns = ['*.json','*.xml']
 
 
 To use it in an older web2py app, you may need to copy the "generic.*" files from a later scaffolding app (after version 1.60).
+이전 Web2py app에서 사용하기 위해서는 "generic.*"파일을 최근 기본 생성 app에서 복사해야 합니다.(버전 1.60 이후).
 
-Here is the code for "generic.html"
+Here is the code for "generic.html" 
+다음은 "genric.html" 코드입니다.
 ``
 {{extend 'layout.html'}}
 
@@ -108,6 +126,7 @@ args=request.application)}}'">admin</button>
 ``:code
 
 Here is the code for "generic.xml"
+다음은 "generic.xml" 코드입니다.
 ``
 {{
 try:
@@ -120,6 +139,7 @@ except:
 ``:code
 
 And here is the code for "generic.json"
+다음은 "generic.json" 코드입니다.
 ``
 {{
 try:
@@ -132,21 +152,25 @@ except:
 ``:code
 
 Any dictionary can be rendered in HTML, XML and JSON as long as it only contains python primitive types (int, float, string, list, tuple, dictionary). ``response._vars`` contains the dictionary returned by the action.
+어떤 사전dictionary든지 python 기본 타입들(int, float, string, list, tuple, dictionary)만을 포함하는 경우엔느 HTML, XML, JSON으로 표시될 수 있습니다. ``response._vars``는 액션에서 반환한 사전dictionary를 포함합니다.
 
 If the dictionary contains other user-defined or web2py-specific objects, they must be rendered by a custom view.
+이 사전dictionary가 다른 사용자 정의 객체나 Web2py에 국한된 객체를 포함하고 있는 경우에는 사용자 뷰Custom View에서 표시되어야 합니다.
 
-#### Rendering ``Rows``
+#### Rendering ``Rows`` ``Rows`` 표시하기
 ``as_list``:inxx
 
 If you need to render a set of Rows as returned by a select in XML or JSON or another format,
 first transform the Rows object into a list of dictionaries using the ``as_list()`` method.
+Select의 결과로 리턴된 Row 셋을 XML이나 JSON또는 다른 포맷으로 표시하는 경우 먼저 Row 객체를 ``as_list()`` 메소드를 이용해서 사전dictionary 리스트로 변환해야 합니다.
 
-Consider for example the following mode:
+Consider for example the following mode: 다음 코드를 살펴보면:
 ``
 db.define_table('person', Field('name'))
 ``:code
 
 The following action can be rendered in HTML, but not in XML or JSON:
+다음 액션action은 HTML로 표시될수있지만 XML이나 JSON으로는 표시될수없습니다:
 ``
 def everybody():
     people = db().select(db.person.ALL)
@@ -154,6 +178,7 @@ def everybody():
 ``:code
 
 while the following action can rendered in XML and JSON:
+반면에 다음 액션Action은 XML과 JSON으로 표시될 수 있습니다:
 
 ``
 def everybody():
@@ -161,15 +186,17 @@ def everybody():
     return dict(people=people)
 ``:code
 
-#### Custom formats
+#### Custom formats 사용자 포맷
 
 If, for example, you want to render an action as a Python pickle:
+예를 들어 액션Action을 Python 피클로 표시하고 싶은 경우:
 
 ``
 http://127.0.0.1:8000/app/default/count.pickle
 ``:code
 
 you just need to create a new view file "default/count.pickle" that contains:
+다음을 포함하는"default/count.pickle"파일을 생성하면됩니다:
 ``
 {{
 import cPickle
@@ -178,16 +205,20 @@ response.write(cPickle.dumps(response._vars),escape=False)
 }}
 ``:code
 
-If you want to be able to render any action as a pickled file, you need only to save the above file with the name "generic.pickle".
+If you want to be able to render any action as a pickled file, you need only to save the above file with the name "generic.pickle". 
+어떤 액션action이든 피클된 파일로 표시하고 싶다면 위의 파일을 "generic.pickle"로 저장하기만 하면 됩니다.
 
 Not all objects are pickleable, and not all pickled objects can be un-pickled. It is safe to stick to primitive Python objects and combinations of them. Objects that do not contain references to file streams or database connections are usually pickleable, but they can only be un-pickled in an environment where the classes of all pickled objects are already defined.
+모든 객체가 픽클가능하지는 않습니다. 그리고 픽클된 모든 객체가 언픽클되는 것은 아니다. 파이썬 원시 객체와 그에 조합만 사용하는 것이 안전하다. 파일 스트림이나 데이터 베이스 연결에 대한 레퍼런스를 포함하지 않는 객체는 보통 픽클 가능 하지만 모든 픽클된 객체의 클래스가 이미 정의된 환경에서만 언픽클될 수 있습니다.
 
 #### RSS
 ``RSS``:inxx
 
 web2py includes a "generic.rss" view that can render the dictionary returned by the action as an RSS feed.
+Web2py는 액션action에서 리턴한 사전dictionary를 RSS 피드로 표시할 수 있는 "generic.rss" 뷰를 포함합니다.
 
 Because the RSS feeds have a fixed structure (title, link, description, items, etc.) then for this to work, the dictionary returned by the action must have the proper structure:
+RSS 피드는 간단한 구조(제목, 링크, 설명, 아이템 등)를 가지고 있기 때문에 액션에서 리턴한 사전dictionary는 적합한 구조를 가지고 있어야 합니다:
 ``
 {'title'      : '',
  'link'       : '',
@@ -197,6 +228,7 @@ Because the RSS feeds have a fixed structure (title, link, description, items, e
 ``:code
 
 and each entry in entries must have the same similar structure:
+각각의 엔트리는 비슷한 구조를 가지고 있어야 합니다:
 
 ``
 {'title'      : '',
@@ -206,6 +238,7 @@ and each entry in entries must have the same similar structure:
 ``:code
 
 For example the following action can be rendered as an RSS feed:
+예를 들어 다음 액션action은 RSS 피드로 표시될 수 있습니다:
 ``
 def feed():
     return dict(title="my feed",
@@ -219,12 +252,14 @@ def feed():
 ``:code
 
 by simply visiting the URL:
-
+다음 URL을 접속하면 RSS 피드가 표시됩니다:
 ``
 http://127.0.0.1:8000/app/default/feed.rss
 ``:code
 
 Alternatively, assuming the following model:
+다른 방법으로는 다음과 같은 모델이 있다고 합시다:
+
 ``
 db.define_table('rss_entry',
     Field('title'),
@@ -234,7 +269,7 @@ db.define_table('rss_entry',
 ``:code
 
 the following action can also be rendered as an RSS feed:
-
+다음 액션 또한 RSS 피드로 표시될 수 있습니다:
 ``
 def feed():
     return dict(title="my feed",
@@ -244,10 +279,13 @@ def feed():
 ``:code
 
 The ``as_list()`` method of a Rows object converts the rows into a list of dictionaries.
+행Row 객체의 ``as_list()`` 메소드는 행을 사전dictionary의 목록으로 변환합니다.
 
 If additional dictionary items are found with key names not explicitly listed here, they are ignored.
+만약에 명시적으로 여기에 리스트되지 않은 키 이름을 갖는 추가적인 사전dictionary 아이템이 존재하는 경우에는 이 아이템들은 무시됩니다.
 
 Here is the "generic.rss" view provided by web2py:
+다음은 Web2py에서 제공하는 "generic.rss" 뷰입니다:
 ``
 {{
 try:
@@ -260,6 +298,7 @@ except:
 ``:code
 
 As one more example of an RSS application, we consider an RSS aggregator that collects data from the "slashdot" feed and returns a new web2py rss feed.
+추가적인 RSS 어플리케이션 예제로 RSS 수집기를 생각해 볼 수 있습니다. 이 것은 "slashdot" 피드에서 데이터를 수집하고 새로운 Web2py RSS 피드를 리턴합니다.
 ``
 def aggregator():
     import gluon.contrib.feedparser as feedparser
@@ -277,6 +316,7 @@ def aggregator():
 ``:code
 
 It can be accessed at:
+이것은 다음에서 확익할 수 있습니다:
 
 ``
 http://127.0.0.1:8000/app/default/aggregator.rss
@@ -286,8 +326,10 @@ http://127.0.0.1:8000/app/default/aggregator.rss
 ``CSV``:inxx
 
 The Comma Separated Values (CSV) format is a protocol to represent tabular data.
+CSV(콤마로 분리된 값)포맷은 테이블 형태의 데이터를 표시하기 위한 방법입니다.
 
 Consider the following model:
+다음 모델을 생각해봅시다:
 ``
 db.define_table('animal',
     Field('species'),
@@ -296,6 +338,7 @@ db.define_table('animal',
 ``:code
 
 and the following action:
+그리고 다음과 같은 액션이 있다고하면:
 ``
 def animals():
     animals = db().select(db.animal.ALL)
@@ -304,6 +347,7 @@ def animals():
 
 web2py does not provide a "generic.csv"; you must define a custom view "default/animals.csv"
 that serializes the animals into CSV. Here is a possible implementation:
+Web2py는 "generic.csv" 파일을 제공하지는 않습니다. 즉 "default/animals.csv" 사용자 뷰를 꼭 정의해야 합니다. 이것은 동물들을 CSV 포맷으로 직렬화합니다. 다음은 구현 예시입니다:
 ``
 {{
 import cStringIO
@@ -315,8 +359,9 @@ response.write(stream.getvalue(), escape=False)
 ``:code
 
 Notice that one could also define a "generic.csv" file, but one would have to specify the name of the object to be serialized ("animals" in the example). This is why we do not provide a "generic.csv" file.
+"generic.csv"파일 또한 정의할 수도 있지만 이 경우에  직렬화할 객체들의 이름(예에서 animals)을 명시해야 합니다. 그래서 Web2py에서 "generic.csv" 파일을 제공하지 않는 이유입니다.
 
-### Remote procedure calls
+### Remote procedure calls 원격 프로시져 호출
 ``RPC``:inxx
 
 web2py provides a mechanism to turn any function into a web service.
@@ -326,10 +371,19 @@ The mechanism described here differs from the mechanism described before because
 - You may want to specify in detail which RPC method should be supported
 - It enforces a more strict URL naming convention
 - It is smarter than the previous methods because it works for a fixed set of protocols. For the same reason it is not as easily extensible.
+Web2py는 어떤 함수든지 웹 서비스로 변환할 수 있는 매커니즘을 제공합니다.
+여기에서 설명된 메커니즘은 이전에 설명한 것과 다름니다. 그 이유는 다음과 같습니다:
+- 함수는 인자를 갖을 수 있다
+- 함수는 컨트롤러controller가 아닌 모델model이나 모듈module에 정의될 수 있다
+- 어떤 RPC 메소드가 지원되어야 하는지 상세하게 지정하기를 원할 지도 모른다
+- 더 엄격한 URL 이름 규칙을 강요합니다
+- 정해진 프로토콜 묶음에 대해서 동작하기 때문에 이전 메소드보다 더 똑똑합니다. 같은 이유로 쉽게 확장가능하지 않습니다
 
 To use this feature:
+이 기능을 사용하기 위해서는:
 
 First, you must import and initiate a service object.
+먼저 서비스 객체를 임포트하고 초기화 합니다.
 ``
 from gluon.tools import Service
 service = Service()
@@ -337,9 +391,11 @@ service = Service()
 
 -------
 This is already done in the "db.py" model file in the scaffolding application.
+이것은 이미 뼈대 어플리케이션의 "db.py" 모델 파일에서 수행되었습니다.
 -------
 
 Second, you must expose the service handler in the controller:
+두번째, 컨트롤러controller에서 서비스 핸들러를 노출시켜야 합니다:
 ``
 def call():
     session.forget()
@@ -348,9 +404,11 @@ def call():
 
 -------
 This is already done in the "default.py" controller of the scaffolding application. Remove ``session.forget()`` if you plan to use session cookies with the services.
+이 과정은 뼈대 어플리케이션의 "default.py" 컨트롤러controller에서 이미 수행됩니다. 만약에 서비스에 세션 쿠키를 사용하려 한다면 ``session.forget()`` 삭제하세요.
 -------
 
 Third, you must decorate those functions you want to expose as a service. Here is a list of currently supported decorators:
+세번째, 서비스로써 노출하기를 위하는 함수들에 대해서 데코레이트decorate해야 합니다. 다음은 현재 지원되는 데코레이터들의 목록입니다:
 ``
 @service.run
 @service.xml
@@ -364,6 +422,7 @@ Third, you must decorate those functions you want to expose as a service. Here i
 ``:code
 
 As an example, consider the following decorated function:
+예로 다음 데코레이트된 함수를 생각해 봅시다:
 ``
 @service.run
 def concat(a,b):
@@ -371,6 +430,7 @@ def concat(a,b):
 ``:code
 
 This function can be defined in a model or in the controller where the ``call`` action is defined. This function can now be called remotely in two ways:
+이 함수는 ``call``액션이 정의된 다른 모델이나 혹은 컨트롤러안에 정의될 수 있습니다.  이함수는 이제 원격에서 2가지 방법으로 호출될 수 있습니다.
 
 ``
 http://127.0.0.1:8000/app/default/call/run/concat?a=hello&b=world
@@ -378,11 +438,13 @@ http://127.0.0.1:8000/app/default/call/run/concat/hello/world
 ``:code
 
 In both cases the http request returns:
+이 두 경우에 HTTP 요청은 다음을 리턴합니다:
 ``
 helloworld
 ``:code
 
 If the ``@service.xml`` decorator is used, the function can be called via:
+``@service.xml`` 데코레이터가 사용되는 경우 함수는 다음과 같이 호출 될 수 있습니다:
 
 ``
 http://127.0.0.1:8000/app/default/call/xml/concat?a=hello&b=world
@@ -390,6 +452,7 @@ http://127.0.0.1:8000/app/default/call/xml/concat/hello/world
 ``:code
 
 and the output is returned as XML:
+출력은 XML로 반환됩니다:
 ``
 <document>
    <result>helloworld</result>
@@ -397,8 +460,10 @@ and the output is returned as XML:
 ``:code
 
 It can serialize the output of the function even if this is a DAL Rows object. In this case, in fact, it will call ``as_list()`` automatically.
+DAL 행Row 객체인 경우에도 함수의 출력을 직렬화 할 수 있습니다.  이 경우 사실 ``as_list``가 자동적으로 호출될 것입니다.
 
 If the ``@service.json`` decorator is used, the function can be called via:
+``@service.json`` 데코레이터가 사용되는 경우 함수는 다음을 통해서 호출될 수 있습니다:
 
 ``
 http://127.0.0.1:8000/app/default/call/json/concat?a=hello&b=world
@@ -406,8 +471,10 @@ http://127.0.0.1:8000/app/default/call/json/concat/hello/world
 ``:code
 
 and the output returned as JSON.
+그리고 출력은 JSON형태로 반환됩니다.
 
 If the ``@service.csv`` decorator is used, the service handler requires, as the return value, an iterable object of iterable objects, such as a list of lists. Here is an example:
+``@service.csv``데코레이터가 사용되는 경우 서비스 핸들러는 리턴값으로 리스트들에 대한 리스트들 처럼 iterable 객체들에 대한 iterable 객체가 필요합니다. 다음은 예입니다:
 ``
 @service.csv
 def table1(a,b):
@@ -415,6 +482,7 @@ def table1(a,b):
 ``:code
 
 This service can be called by visiting one of the following URLs:
+이 서비스는 다음의 URL을 통해서 호출될 수 있습니다:
 
 ``
 http://127.0.0.1:8000/app/default/call/csv/table1?a=hello&b=world
@@ -422,21 +490,26 @@ http://127.0.0.1:8000/app/default/call/csv/table1/hello/world
 ``:code
 
 and it returns:
+그리고 이것은 다음을 리턴합니다:
 ``
 hello,world
 1,2
 ``:code
 
 The ``@service.rss`` decorator expects a return value in the same format as the "generic.rss" view discussed in the previous section.
+``@service.rss`` 데코레이터는  이전 섹션에서 논의한 "generic.rss" 뷰와 같은 포맷을 갖는 리턴값을 기대합니다. 
 
 Multiple decorators are allowed for each function.
+다수의 데코레이터가 각 함수에 대해서 허용됩니다.
 
 So far, everything discussed in this section is simply an alternative to the method described in the previous section. The real power of the service object comes with XMLRPC, JSONRPC and AMFRPC, as discussed below.
+지금까지 이번 섹션에서 논의된 모든 것은 이전 섹션에서 설명한 메소드들에 대한 간단한 대안입니다. XMLRPC, JSONRPC, AMFRC의 서비스 객체의 진정한 힘은 아래에서 논의합니다.
 
 #### XMLRPC
 ``XMLRPC``:inxx
 
 Consider the following code, for example, in the "default.py" controller:
+예를 들어 "default.py" 컨트롤러에 다음 코드를 생각해봅시다:
 ``
 @service.xmlrpc
 def add(a,b):
@@ -448,6 +521,7 @@ def div(a,b):
 ``:code
 
 Now in a python shell you can do
+이제 Python 셀에서 다음과 같이 할 수 있습니다
 ``
 >>> from xmlrpclib import ServerProxy
 >>> server = ServerProxy(
@@ -463,12 +537,16 @@ ZeroDivisionError: integer division or modulo by zero
 ``:code
 
 The Python xmlrpclib module provides a client for the XMLRPC protocol. web2py acts as the server.
+Python xmlrpclib 모듈은 XMLRPC 프로토콜을 위한 클라이언트를 제공합니다. Web2py는 서버 기능을 수행합니다.
 
 The client connects to the server via ServerProxy and can remotely call decorated functions in the server. The data (a,b) is passed to the function(s), not via GET/POST variables, but properly encoded in the request body using the XMLPRC protocol, and thus it carries with itself type information (int or string or other). The same is true for the return value(s). Moreover, any exception raised on the server propagates back to the client.
+클라이언트는 ServerProxy를 통해서 서버에 접속하고 원격으로 서버안에 데코레이트된 함수를 호출할 수 있습니다. 데이터(a,b)는 GET/POST 변수를 통해 전달되는 것이 아니라 함수로 전달됩니다.  하지만 이것들은 XMLRPC프로토콜을 이용하는 요청몸체request body에 적절하게 인코딩됩니다. 그리고 여기에는 타입정보(int, string 등)도 함께 실려갑니다. 리턴값도 동일합니다. 게다가 서버에서 발생한 어떠한 예외도 클라이언트에게로 전파됩니다.
 
 There are XMLRPC libraries for many programming languages (including C, C++, Java, C#, Ruby, and Perl), and they can interoperate with each other. This is one the best methods to create applications that talk to each other independent of the programming language.
+많은 프로그래밍 언어(C,C++,Java, C#, Rupy, Perl포함)를 위한 많은 XMLRPC 라이브러리가 존재합니다. 그리고 이 라이브럴리들은 서로 상호연동이 가능합니다. 이것은 프로그래밍 언어에 각기 독립적으로 서로 통신하는 어플리케이션을 생성하는데 가장좋은 방법입니다.
 
 The XMLRPC client can also be implemented inside a web2py action, so that one action can talk to another web2py application (even within the same installation) using XMLRPC. Beware of session deadlocks in this case. If an action calls via XMLRPC a function in the same app, the caller must release the session lock before the call:
+XMLRPC 클라이언트는 Web2py 액션action내에 구현될 수 있습니다. 그래서 액션은 XMLRPC를 이용하는 다른 Web2py 어플리케이션과 통신할 수 있습니다(심지어 같은 인스톨 환경안에서도 가능합니다). 
 ``
 session.forget(response)
 ``:code
@@ -478,7 +556,7 @@ session.forget(response)
 ``JSONRPC``:inxx
 
 In this section we are going to use the same code example as for XMLRPC but we will expose the service using JSONRPC instead:
-
+이번 섹션에서는 XMLRPC와 동일한 예제 코드를 사용할 것이지만 이번에는 JSONRPC를 이용해서 서비스를 노출할 것입니다.
 ``
 @service.jsonrpc
 def add(a,b):
@@ -489,8 +567,10 @@ def call():
 ``:code
 
 JSONRPC is very similar to XMLRPC but uses JSON instead of XML as data serialization protocol.
+JSONRPC는 XMLRPC와 아주 흡사하지만 데이터 직렬화 프로토콜로 XML대신에 JSON을 사용합니다.
 
 Of course we can call the service from any program in any language but here we will do it in Python. web2py ships with a module "gluon/contrib/simplejsonrpc.py" created by Mariano Reingart. Here is an example of how to use to call the above service:
+물론 어떤언어 어던 프로그램에서 서비스를 호출할 수 있지만 여기서는 Python을 이용할 것입니다. Web2py는 Mariano Reigart가 만든 "gluon/contrib/simplejsonrpc.py" 모듈이 포함되어 있습니다. 다음은 위의 서비스를 호출하는 방법에 대한 예제입니다.
 
 ``
 >>> from gluon.contrib.simplejsonrpc import ServerProxy
@@ -503,14 +583,19 @@ Of course we can call the service from any program in any language but here we w
 ``JSONRPC``:inxx ``Pyjamas``:inxx
 
 JSONRPC is very similar to XMLRPC, but uses the JSON-based protocol instead of XML to encode the data. As an example of application here, we discuss its usage with Pyjamas. Pyjamas is a Python port of the Google Web Toolkit (originally written in Java). Pyjamas allows writing a client application in Python. Pyjamas translates this code into JavaScript. web2py serves the JavaScript and communicates with it via AJAX requests originating from the client and triggered by user actions.
+JSONRPC는 XMLPRC와 메뉴 흡사하지만 데이터를 인코드하는데 XML대신에 JSON에 기초한 프로토콜을 사용합니다. 어플리케이션 예제로 Pyjamas 사용법에 대해서 살펴볼 것입니다. Pyjamas는 Google Web Toolkit(원래는 Java용으로 작성된 것입니다)의 Python용 입니다. Pyjamas는 Python으로 클라이언트 어플리케이션을 작성할 수 있게 해줍니다. Pyjamas는 이 코드를 JavaScript로 변환합니다. Web2py는 JavaScript를 서비스하고 사용자가 유발하고 클라이언트에서 시작된 AJAX 요청을 통해서 통신합니다.
 
 Here we describe how to make Pyjamas work with web2py. It does not require any additional libraries other than web2py and Pyjamas.
+여기서 어떻게 Pyjamas가 Web2py와 동작하도록 만드는지를 기술합니다. Web2py와 Pyjamas외에 다른 추가적인 라이브러리는 필요하지 않습니다.
 
 We are going to build a simple "todo" application with a Pyjamas client (all JavaScript) that talks to the server exclusively via JSONRPC.
+JSONRPC를 통해서 서버와 통신하는 Pyjamas 클라이언트(순수 JavaScript)를 가지고 간단한 "todo" 어플리케이션을 만들것입니다.
 
 First, create a new application called "todo".
+먼저 "todo"라는 어플리케이션을 생성합니다.
 
 Second, in "models/db.py", enter the following code:
+두번째, "model/db.py"에 다음과 같이 작성합니다:
 ``
 db=DAL('sqlite://storage.sqlite')
 db.define_table('todo', Field('task'))
@@ -518,8 +603,10 @@ service = Service()
 ``:code
 
 ''(Note: Service class is from gluon.tools).''
+''(주의: Service 클래스는 gluon.tools에 것을 사용합니다)''
 
 Third, in "controllers/default.py", enter the following code:
+세번째, "controllers/default.py"에 다음과 같이 작성합니다:
 ``
     def index():
     redirect(URL('todoApp'))
@@ -548,8 +635,10 @@ Third, in "controllers/default.py", enter the following code:
 ``:code
 
 The purpose of each function should be obvious.
+각 함수의 목적이 무엇인지는 바로 알 수 있습니다.
 
 Fourth, in "views/default/todoApp.html", enter the following code:
+네번째, "views/default/todoApp.html"에 다음과 같이 작성합니다:
 ``
 <html>
   <head>
@@ -575,9 +664,11 @@ Fourth, in "views/default/todoApp.html", enter the following code:
 ``:code
 
 This view just executes the Pyjamas code in "static/output/todoapp" - code that we have not yet created.
+이뷰view는 "static/output/todoapp"에 있는 Pyjamas코드를 실행합니다 - 코드는 아직 생성하지 않았습니다.
 
 Fifth, in "static/TodoApp.py" (notice it is TodoApp, not todoApp!),
 enter the following client code:
+다섯번째, "static/TodoApp.py"에 (TodoApp이지 todoApp가 아닙니다), 다음 클라이언트 코드를 작성합니다:
 ``
 from pyjamas.ui.RootPanel import RootPanel
 from pyjamas.ui.Label import Label
@@ -660,20 +751,24 @@ if __name__ == '__main__':
 ``:code
 
 Sixth, run Pyjamas before serving the application:
+여섯번째, 어플리케이션을 서비스하기전에 Pyjamas를 실행합니다.
 ``
 cd /path/to/todo/static/
 python /python/pyjamas-0.5p1/bin/pyjsbuild TodoApp.py
 ``:code
 
 This will translate the Python code into JavaScript so that it can be executed in the browser.
+이것은 브라우저에서 실행될 수 있도록 Python 코드를 JavaScript코드로 변한합니다. 
 
 To access this application, visit the URL:
+다음 URL을 통해서 어플리케이션에 접근합니다:
 
 ``
 http://127.0.0.1:8000/todo/default/todoApp
 ``:code
 
 This subsection was created by Chris Prinos with help from Luke Kenneth Casson Leighton (creators of Pyjamas), updated by Alexei Vinidiktov. It has been tested with Pyjamas 0.5p1. The example was inspired by this Django page in ref.``blogspot1``:cite.
+이 부섹션은 Chris Prinos가  Luke Kenneth Casson Leighton(Pyjamas 제작자)의 도움으로 작성되었으며 Alexei Vinidiktov가 갱신하였습니다. Pyjamas 0.5p1으로 테스트되었으며 이 예제는 ``blogspot1``:cite 에 있는 Django page에 영감을 받은 것입니다.
 
 #### AMFRPC
 ``PyAMF``:inxx ``Adobe Flash``:inxx
@@ -1354,5 +1449,3 @@ def private_call(): return private_service()
 ``:code
 
 This assumes that the caller is passing credentials in the HTTP header (a valid session cookie or using basic authentication, as discussed in the previous section). The client must support it; not all clients do.
-
-
